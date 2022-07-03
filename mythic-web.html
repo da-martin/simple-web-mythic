@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mythic Simple Web</title>
+<!-- CSS HERE: -->
+  <style>
+    
+    body {
+      --accent-color: 105, 100%, 12%; 
+      background-color: #CCC;
+      color: #222;
+      font-family: "Garamond", serif;
+      box-sizing: border-box;
+    }
+
+    hr {
+      border: 0;
+      width: 96%;               
+      background-color: hsla(var(--accent-color), 0.7);
+      height: 1px;
+    }
+
+    h1 {
+      text-shadow: 2px 2px 2px hsla(var(--accent-color), 0.7); 
+      /*margin-right: 15vh;
+      text-align: center;*/
+      text-align: left;
+      margin-left: 16px;
+      margin-block-start: 0.3em;
+      margin-block-end: 0.3em;
+      
+    }
+    
+    p {
+      margin: 8px;
+    }
+
+    a {
+      color: hsla(var(--accent-color), 1);
+      font-weight: 700;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: row;
+      flex: auto;
+      flex-wrap: wrap;
+    }
+
+    .frames {
+      background-color: #DDD;
+      border: 2px solid hsla(var(--accent-color), 1);
+      border-radius: 4px;
+      padding: 8px;
+      width: max(45%,300px);
+      margin: 4px;
+      box-shadow: 4px 4px 4px hsla(var(--accent-color), 0.4);
+    }
+
+    #credits {
+      /*padding: 8px;*/
+      font-size: small;
+      width: calc(90% + 28px);
+    }
+
+    @media screen and (max-width: 700px) {
+      .frames {
+        width: max(94%,300px);
+      }
+      #credits {
+      width: calc(94%);
+    }
+    }
+
+    #main {
+      display: flex;
+      flex-direction: column;
+      /* align-items: center; */
+      justify-content: space-between;
+    }
+
+    #results {
+      font-family: "Garamond", serif;
+      width: 200px;
+      height: 100px;
+      border-right:  1px solid #FFF; 
+      border-bottom: 1px solid #FFF;
+      border-left: 1px solid #444;
+      border-top: 1px solid #444;
+      border-radius: 0px;
+      /*box-shadow: -1px -1px 0px #444;*/
+      background-color: #CCC;
+      padding: 4px;
+      border-radius: 3px;
+      /* text-align: center; */
+      /*margin: 1px;*/
+    }
+
+    button {
+      background-color: white;
+      border: 1px solid #333;
+      border-radius: 3px;
+      box-shadow: 1px 1px 0px #333;
+      margin: 1px;
+    }
+    button:active {
+      box-shadow:  0px 0px 0px #333;
+    }
+    
+    .labels {
+      font-weight: bold;
+    }
+  
+    .oracle-rows {
+      margin: 2px;
+      padding: 1px 0px;
+    }
+
+    
+
+  </style>
+</head>
+
+<!-- WEB ELEMENTS HERE -->
+<body>
+  <h1>Mythic Simple Web</h1>
+  <div id="container">
+    <div id="main" class="frames">
+      <div class="oracle-rows">
+        <label for "chaosfactor-select">Chaos Factor</label>
+        <select id="chaosfactor-select">
+          <option value="6">6</option>
+          <option value="5">5</option>
+          <option value="4" selected>4</option>
+          <option value="3">3</option>
+        </select>
+        <button type="button" id="scene-button">Scene Setup</button>
+      </div>
+      <div class="oracle-rows">
+        <button type="button" id="fate-button">Fate Check</button>
+        <select id="fate-likelyhood">
+          <option value="8">Has To Be</option>
+          <option value="6">Sure Thing</option>
+          <option value="4">V. Likely</option>
+          <option value="2">Likely</option>
+          <option value="0" selected>50% - Unsure</option>
+          <option value="-2">Unlikely</option>
+          <option value="-4">V. Unlikely</option>
+          <option value="-6">No Way</option>
+          <option value="-8">Impossible</option>
+        </select>
+        <select id="fate-favorable">
+          <option value="Favorable">Favorable</option>
+          <option value="Neutral" selected>Neutral</option>
+          <option value="Unfavorable">Unfavorable</option>
+        </select>
+      </div>
+      <div class="oracle-rows">
+        <select id="focus-event">
+          <option value="0" selected>Standard Theme</option>
+        </select>
+        <button type="button" id="focus-button">Event Focus</button>
+      </div>
+      <div class="oracle-rows">
+        <button type="button" id="action-button">Action</button>
+        <button type="button" id="description-button">Description</button>
+        <button type="button" id="detail-button">Detail Check</button>
+      </div>
+      <hr>
+      <div class="oracle-rows">
+        🎲
+        <button type="button" id="d4-button">4</button>
+        <button type="button" id="d6-button">6</button>
+        <button type="button" id="d8-button">8</button>
+        <button type="button" id="d10-button">10</button>
+        <button type="button" id="d12-button">12</button>
+        <button type="button" id="d20-button">20</button>
+        <button type="button" id="d100-button">100</button>
+        <button type="button" id="dF-button">F</button>        
+      </div>
+      <hr>
+      <div class="oracle-rows">
+        <select id="character-tables"></select>
+        <button type="button" id="character-button">Character Tables</button>
+      </div>
+      <div class="oracle-rows">
+        <select id="location-tables"></select>
+        <button type="button" id="location-button">Location Tables</button>
+      </div>
+      <div class="oracle-rows">
+        <select id="object-tables"></select>
+        <button type="button" id="object-button">Object Tables</button>
+      </div>
+      <div class="oracle-rows">
+        <select id="adventure-tables"></select>
+        <button type="button" id="adventure-button">Adventure Tables</button>
+      </div>
+    </div>
+
+    <div id="text-results" class="frames">
+      <form>
+      <label for="results">Inspiration goes here:</label><br>
+      <textarea id="results" rows="6" columns="30"></textarea>
+      <br><button type="reset">Clear text</button>
+      </form>
+    </div>
+ 
+    <div id="credits" class="frames">
+      <p>NOTES:</p>
+      <p>
+        In order to use this tool you need some knowledge of <em>Mythic Game Master Emulator</em> and <em>Mythic Variations 2</em>.<br>
+        You can resize the "Inspiration goes here" box, write your notes in there and, when you are finished, copy them to your note taking app of choice.<br>
+      </p>
+      <hr>
+      <p>
+        This is just a single html file, so you can use it on any device with a (modern) web browser, even offline. Just right-click anywhere, then select "Save as", then enter a file name and select "Web Page, complete (*.htm;*.html)" and copy the file to the device where you want to use it.
+      </p>
+      <hr>
+      <p>
+      This tool is based on Mythic Game Master Emulator, Mythic Variations, Mythic Variations 2, and the Mythic Magazines by Tana Pigeon.
+      Mythic Magazine 18 has more tables than the ones here, check it out!<br>
+      Visit <a href="http://www.wordmillgames.com">www.wordmillgames.com</a> for more information.
+      </p>
+    </div>
+  </div>
+
+<!-- JAVASCRIPT HERE -->
+<script type="text/javascript">
+let gChaosFactor = 4;
+const txtaResults = document.querySelector('#results');
+const selTheme = document.querySelector('#focus-event');
+window.addEventListener('load', () => {
+
+  const selectEventFocus = document.querySelector('#focus-event');
+  let themeIDs = [HORRORTHEME,ACTIONTHEME,MYTERYPLUSTHEME,SOCIALTHEME,PERSONALTHEME,PUBLISHEDADVENTURE,BACKSTORYTHEME];
+  loadSelect(selectEventFocus, themeIDs);
+
+  const selectCharacterTables = document.querySelector('#character-tables');
+  themeIDs = [CHARACTERDESCRIPTION,CHARACTERPHYSICAL,CHARACTERIDENTITY,CHARACTERPERSONALITY,CHARACTERTRAITS,CHARACTERBACKGROUND,CHARACTERMOTIVATION,CHARACTERCONVERSATION,CHARACTERACTION,CHARACTERCOMBAT,POWERS,CREATUREDESCRIPTION,CREATUREABILITIES,ANIMALACTION];
+  loadSelect(selectCharacterTables, themeIDs);
+
+  const selectLocationTables = document.querySelector('#location-tables');
+  themeIDs = [LOCATIONDESCRIPTORS,CITYDESCRIPTORS,CAVERNDESCRIPTION,FORESTDESCRIPTORS,PLANETDESCRIPTORS,STARSHIPDESCRIPTORS];
+  loadSelect(selectLocationTables, themeIDs);
+
+  const selectObjectTables = document.querySelector('#object-tables');
+  themeIDs = [GENERALITEMDESCRIPTORS,SMALLITEMDESCRIPTORS,MAGICITEMDESCRIPTORS,SPELLEFFECTS];
+  loadSelect(selectObjectTables, themeIDs);
+
+  const selectAdventureTables = document.querySelector('#adventure-tables');
+  themeIDs = [ADVENTURETONE,PLOTTWIST,SOUNDS,CLUEDESCRIPTORS,SUSPECTDESCRIPTORS];
+  loadSelect(selectAdventureTables, themeIDs);
+
+
+});
+
+
+
+const selChaosFactor = document.querySelector('#chaosfactor-select');
+selChaosFactor.addEventListener('change', () => {
+  gChaosFactor = Number(selChaosFactor.value)});
+
+const btnScene = document.querySelector('#scene-button');
+btnScene.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "SCENE SETUP: " + sceneSetup(gChaosFactor,Number(selTheme.value)) + "\n";
+})
+
+const btnFate = document.querySelector('#fate-button');
+btnFate.addEventListener('click', () => {
+  const likelyhood = document.querySelector('#fate-likelyhood');
+  const favorable = document.querySelector('#fate-favorable');
+  txtaResults.value = txtaResults.value + "FATE CHECK: " + fateCheck(gChaosFactor,likelyhood.value,favorable.value,selTheme.value) + "\n";
+})
+
+const btnFocus = document.querySelector('#focus-button');
+btnFocus.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "EVENT FOCUS: " + rollOnTable(Number(selTheme.value)) + "\n";
+})
+
+const btnAction = document.querySelector('#action-button');
+btnAction.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "ACTION, MEANING: " + meaningAction() + "\n";
+})
+
+const btnDescription = document.querySelector('#description-button');
+btnDescription.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "DESCRIPTION, MEANING: " + meaningDescription() + "\n";;
+})
+
+const btnDetail = document.querySelector('#detail-button');
+btnDetail.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "DETAIL CHECK: " + detailCheck(gChaosFactor) + "\n";
+})
+
+const btnD4 = document.querySelector('#d4-button');
+btnD4.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "D4 ROLL: " + (Math.floor(Math.random() * 4) + 1) + "\n";
+})
+
+const btnD6 = document.querySelector('#d6-button');
+btnD6.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "D6 ROLL: " + (Math.floor(Math.random() * 6) + 1) + "\n";
+})
+
+const btnD8 = document.querySelector('#d8-button');
+btnD8.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "D8 ROLL: " + (Math.floor(Math.random() * 8) + 1) + "\n";
+})
+
+const btnD10 = document.querySelector('#d10-button');
+btnD10.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "D10 ROLL: " + (Math.floor(Math.random() * 10) + 1) + "\n";
+})
+
+const btnD12 = document.querySelector('#d12-button');
+btnD12.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "D12 ROLL: " + (Math.floor(Math.random() * 12) + 1) + "\n";
+})
+
+const btnD20 = document.querySelector('#d20-button');
+btnD20.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "D20 ROLL: " + (Math.floor(Math.random() * 20) + 1) + "\n";
+})
+
+const btnD100 = document.querySelector('#d100-button');
+btnD100.addEventListener('click', () => {
+    txtaResults.value = txtaResults.value + "D100 ROLL: " + (Math.floor(Math.random() * 100) + 1) + "\n";
+})
+
+// function fateDiceFormat(roll) gets 1 and return "+1", get -1 and return "-1"
+function fateDiceFormat(roll) {
+  if (roll > 0) {
+    return "[+]";
+  } else if (roll < 0) {
+    return "[-]";
+  } else {
+    return "[  ]";
+  }
+}
+
+const btnDF = document.querySelector('#dF-button');
+btnDF.addEventListener('click', () => {
+  const d1 = (Math.floor(Math.random() * 3) - 1);
+  const d2 = (Math.floor(Math.random() * 3) - 1);
+  const d3 = (Math.floor(Math.random() * 3) - 1);
+  const d4 = (Math.floor(Math.random() * 3) - 1);
+  const dF = d1 + d2 + d3 + d4;
+  const dFRolls = `dF ROLL: ${fateDiceFormat(d1)} ${fateDiceFormat(d2)} ${fateDiceFormat(d3)} ${fateDiceFormat(d4)} = ${dF}`;
+  txtaResults.value = txtaResults.value + dFRolls + "\n";
+})
+
+const btnCharacter = document.querySelector('#character-button');
+btnCharacter.addEventListener('click', () => {
+  const selCharacter = document.querySelector('#character-tables')
+  txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(Number(selCharacter.value)) + ", " + rollOnTable(Number(selCharacter.value)) + "\n";
+})
+
+const btnLocation = document.querySelector('#location-button');
+btnLocation.addEventListener('click', () => {
+  const selLocation = document.querySelector('#location-tables')
+  txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(Number(selLocation.value)) + ", " + rollOnTable(Number(selLocation.value)) + "\n";
+})
+
+const btnObject = document.querySelector('#object-button');
+btnObject.addEventListener('click', () => {
+  const selObject = document.querySelector('#object-tables')
+  txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(Number(selObject.value)) + ", " + rollOnTable(Number(selObject.value)) + "\n";
+})
+
+const btnAdventure = document.querySelector('#adventure-button');
+btnAdventure.addEventListener('click', () => {
+  const selAdventure = document.querySelector('#adventure-tables')
+  txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(Number(selAdventure.value)) + ", " + rollOnTable(Number(selAdventure.value)) + "\n";
+})
+
+
+function loadSelect(element,arrayTablesIDs) {
+  console.log(element);
+  console.log(arrayTablesIDs);
+  arrayTablesIDs.forEach(item => {
+    const optionItem = document.createElement("option");
+    optionItem.value = item;
+    optionItem.text = tables[item][0];
+    element.appendChild(optionItem);
+  });
+}
+
+function rollOnTable(tableNumber){
+  if (isNaN(tableNumber)) return "";
+  let randomIndex = Math.floor(Math.random() * (tables[tableNumber].length - 1)) + 1;
+  let randomResult = tables[tableNumber][randomIndex];
+  return randomResult;
+}
+
+function sceneSetup(chaosFactor,theme) {
+  let d1 = Math.floor(Math.random() * 10) + 1;
+  console.log(`Dado Scene Setup: ${d1}`)
+  if (d1 > chaosFactor) return "Scene as expected";
+  else if (d1 % 2 != 0) return "Scene is altered";
+  else return "Scene is interrupted\n" + randomEvent(theme);
+}
+  
+function fateCheck(chaosFactor,likelyhood,favorable,theme) {
+  let d1 = Math.floor(Math.random() * 10) + 1;
+  let d2 = Math.floor(Math.random() * 10) + 1;
+  let d3 = Math.floor(Math.random() * 10) + 1;
+  console.log(`Dados Fate Check: ${d1} ${d2}, ${d3}`);
+  let result = "";
+  let modifier = 0;
+  if ((likelyhood == "Favorable" && gChaosFactor < 4) || (likelyhood == "Unfavorable" && gChaosFactor > 6)) modifier = 2;
+    else if ((likelyhood == "Unfavorable" && chaosFactor < 4) || (likelyhood == "Favorable" && chaosFactor > 6)) modifier = -2;
+  console.log(`D1:${d1} D2:${d2} D3:${d3} Mod:${modifier} Likely:${likelyhood}`);
+  ((d1 + d2 + modifier + Number(likelyhood)) > 10) ? result = "Yes" : result = "No";
+  if (d3<=chaosFactor) {
+    if (d1 == d2) {
+      result = "Exceptional " + result + " and random event\n";
+    }
+    else if (d1 % 2 == 0 && d2 % 2 == 0) {
+      result = result + " and random event\n";
+    }
+    else if (d1 % 2 !== 0 && d2 % 2 !== 0) {
+      result = "Exceptional " + result;
+      return result;
+    }
+    else return result;
+    result = result + randomEvent(theme);
+  }
+  return result;
+}
+  
+function randomEvent(theme) {
+  return rollOnTable(theme) + "\n" + meaningAction();
+}
+
+function meaningAction() {
+  return rollOnTable(MEANINGVERB) + " (of) " + rollOnTable(MEANINGSUBJECT);
+}
+
+function meaningDescription() {
+  return rollOnTable(DESCRIPTIONADVERB) + " " + rollOnTable(DESCRIPTIONADJECTIVE);
+}
+
+function detailCheck(chaosFactor) {
+  if (chaosFactor < 4) return rollOnTable(LOWCFDETAIL);
+  else if (chaosFactor < 6) return rollOnTable(MEDCFDETAIL);
+  else return rollOnTable(HIGHCFDETAIL);
+}
+
+// TABLES DOWN HERE
+
+const STANDARDTHEME = 0; 
+const HORRORTHEME = 1;
+const ACTIONTHEME = 2; 
+const MYTERYPLUSTHEME = 3;
+const SOCIALTHEME = 4; 
+const PERSONALTHEME = 5;
+const PUBLISHEDADVENTURE = 6; 
+const BACKSTORYTHEME = 7;
+const LOWCFDETAIL = 8; 
+const MEDCFDETAIL = 9;
+
+const HIGHCFDETAIL = 10; 
+const DESCRIPTIONADVERB = 11;
+const DESCRIPTIONADJECTIVE = 12; 
+const MEANINGVERB = 13;
+const MEANINGSUBJECT = 14;
+const ADVENTURETONE = 15;
+const ANIMALACTION = 16;
+const CAVERNDESCRIPTION = 17;
+const CHARACTERCOMBAT = 18;
+const CHARACTERACTION = 19;
+
+const CHARACTERBACKGROUND = 20;
+const CHARACTERCONVERSATION = 21;
+const CHARACTERDESCRIPTION = 22;
+const CHARACTERPHYSICAL = 23;
+const CHARACTERIDENTITY = 24;
+const CHARACTERMOTIVATION = 25;
+const CHARACTERPERSONALITY = 26;
+const CHARACTERTRAITS = 27;
+const CITYDESCRIPTORS = 28;
+const CLUEDESCRIPTORS = 29;
+
+const CREATUREABILITIES = 30;
+const CREATUREDESCRIPTION = 31;
+const DUNGEONDESCRIPTORS = 32;
+const FORESTDESCRIPTORS = 33;
+const LOCATIONDESCRIPTORS = 34;
+const MAGICITEMDESCRIPTORS = 35;
+const GENERALITEMDESCRIPTORS = 36;
+const SMALLITEMDESCRIPTORS = 37;
+const PLANETDESCRIPTORS = 38;
+const PLOTTWIST = 39;
+
+const POWERS = 40;
+const SOUNDS = 41;
+const SPELLEFFECTS = 42;
+const STARSHIPDESCRIPTORS = 43;
+const SUSPECTDESCRIPTORS = 44;
+
+const tables = [
+["Standard Theme","Remote Event","Remote Event","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Introduce A New Npc","Introduce A New Npc","Move Toward A Thread","Move Toward A Thread","Move Toward A Thread","Move Away From A Thread","Move Away From A Thread","Close A Thread","Pc Negative","Pc Negative","Pc Negative","Pc Negative","Pc Positive","Pc Positive","Ambiguous Event","Ambiguous Event","Npc Negative","Npc Negative","Npc Negative","Npc Positive","Npc Positive"],
+["Horror Theme","Horror - PC","Horror - PC","Horror - PC","Horror - NPC","Horror - NPC","Horror - NPC","Horror - NPC","Remote event","Remote event","NPC action","NPC action","NPC action","NPC action","NPC action","NPC action","New NPC","Move toward a thread","Move away from a thread","Move away from a thread","PC negative","PC negative","PC negative","PC positive","Ambiguous event","Ambiguous event","NPC negative","NPC negative","NPC negative","NPC negative","NPC negative","NPC positive"],
+["Action Theme","Action!","Action!","Action!","Remote event","Remote event","NPC action","NPC action","NPC action","NPC action","NPC action","New NPC","New NPC","Move toward a thread","Move away from a thread","Move away from a thread","PC negative","PC negative","PC negative","PC positive","Ambiguous event","NPC negative","NPC negative","NPC negative","NPC positive"],
+["Mystery+ Theme","Clue Element","Clue Element","Clue Element","Clue Element","Clue Element","Clue Element","Clue Element","Suspect Element","Suspect Element","Suspect Element","Suspect Element","Suspect Element","Suspect Element","Suspect Element","Remote Event","Remote Event","Ambiguous Event","Ambiguous Event","New Npc","New Npc","New Npc","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Npc Negative","Npc Negative","Npc Negative","Npc Negative","Npc Positive","Npc Positive","Move Toward A Thread","Move Toward A Thread","Move Toward A Thread","Move Toward A Thread","Move Away From A Thread","Move Away From A Thread","Close A Thread","Pc Negative","Pc Negative","Pc Negative","Pc Negative","Pc Positive","Pc Positive","Pc Positive"],
+["Social Theme","Drop a bomb!","Drop a bomb!","Drop a bomb!","Remote event","Remote event","Remote event","NPC action","NPC action","NPC action","New NPC","New NPC","Move toward a thread","Move toward a thread","Move toward a thread","Move away from a thread","Close a thread","PC negative","PC negative","PC positive","PC positive","Ambiguous event","Ambiguous event","Ambiguous event","NPC negative","NPC negative","NPC positive"],
+["Personal Theme","Remote event","Remote event","NPC action","NPC action","NPC action","NPC action","NPC action","PC NPC action","New NPC","New NPC","Move toward a thread","Move toward a thread","Move toward a PC thread","Move away from a thread","Move away from a thread","Move away from a PC thread","Close thread (or PC thread)","PC negative","PC negative","PC negative","PC positive","PC positive","Ambiguous event","Ambiguous event","NPC negative","PC NPC negative (or positive)","NPC positive","NPC positive"],
+["Published Adventure Theme","Adventure Feature","Adventure Feature","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Pc Negative","Pc Negative","Pc Negative","Pc Positive","Pc Positive","Npc Negative","Npc Negative","Npc Positive","Npc Positive"],
+["Backstory Theme","New NPC","New NPC","NPC action, or new NPC","NPC negative, or new NPC","NPC positive, or new NPC","New thread ","Close a thread, or new thread","Close a thread, or new thread","Subject negative","Subject positive","Connection, NPC to NPC","Connection, NPC to subject","Complete, or new thread","Complete, or new thread"],
+["Low CF Detail","Anger / Sadness","Fear","Disfavors Thread","Disfavors Pc","Disfavors Pc","Focus Pc","Focus Pc","Focus Pc","Focus Pc","Focus Pc","Favors Pc","Favors Pc","Favors Pc","Favors Pc","Favors Pc","Disfavors Npc","Disfavors Npc","Disfavors Npc",  "Focus Thread","Focus Thread","Focus Thread",  "Favors Thread","Favors Thread",   "Favors Thread","Courage","Courage","Happiness","Happiness","Calm","Calm","Calm","Calm","Calm"],
+["Medium CF Detail","Anger","Sadness","Sadness","Fear","Fear","Disfavors Thread","Disfavors Thread","Disfavors Pc","Disfavors Pc","Focus Pc","Focus Pc","Focus Pc","Focus Pc","Focus Pc","Focus Pc","Favors Pc","Favors Pc","Favors Pc","Favors Pc","Favors Pc","Disfavors Npc","Disfavors Npc","Disfavors Npc","Focus Thread","Focus Thread","Focus Thread","Favors Thread","Favors Thread","Courage","Courage","Happiness","Happiness","Calm"],
+
+["High CF Detail","Anger","Anger","Anger","Anger","Anger","Sadness","Sadness","Fear","Fear","Disfavors Thread","Disfavors Thread","Disfavors Thread","Disfavors Pc","Disfavors Pc","Disfavors Pc","Focus Pc","Focus Pc","Focus Pc","Focus Pc","Focus Pc","Favors Pc","Favors Pc","Favors Pc","Disfavors Npc","Disfavors Npc","Focus Thread","Focus Thread","Favors Thread","Courage","Happiness / Calm"],
+["Description Adverb","Abnormally","Adventurously","Aggressively","Angrily","Anxiously","Awkwardly","Beautifully","Bleakly","Boldly","Bravely","Busily","Calmly","Carefully","Carelessly","Cautiously","Ceaselessly","Cheerfully","Combatively","Coolly","Crazily","Fully","Generously","Gently","Gladly","Gracefully","Gratefully","Happily","Hastily","Healthily","Helpfully","Helplessly","Hopelessly","Innocently","Intensely","Interestingly","Irritatingly","Jovially","Joyfully","Judgementally","Kindly","Peacefully","Perfectly","Playfully","Politely","Positively","Powerfully","Quaintly","Quarrelsomely","Quietly","Roughly","Rudely","Ruthlessly","Slowly","Softly","Swiftly","Threateningly","Very","Violently","Wildly","Yieldingly","Curiously","Daintily","Dangerously","Defiantly","Deliberately","Delightfully","Dimly","Efficiently","Energetically","Enormously","Enthusiastically","Excitedly","Fearfully","Ferociously","Fiercely","Foolishly","Fortunately","Frantically","Freely","Frighteningly","Kookily","Lazily","Lightly","Loosely","Loudly","Lovingly","Loyally","Majestically","Meaningfully","Mechanically","Miserably","Mockingly","Mysteriously","Naturally","Neatly","Nicely","Oddly","Offensively","Officially","Partially"],
+["Description Adjective","Abandoned","Abnormal","Amusing","Ancient","Aromatic","Average","Beautiful","Bizarre","Classy","Clean","Cold","Colorful","Creepy","Cute","Damaged","Dark","Defeated","Delicate","Delightful","Dirty","Graceful","Hard","Harsh","Healthy","Heavy","Historical","Horrible","Important","Interesting","Juvenile","Lacking","Lame","Large","Lavish","Lean","Less","Lethal","Lonely","Lovely","Macabre","Remarkable","Rotten","Rough","Ruined","Rustic","Scary","Simple","Small","Smelly","Smooth","Soft","Strong","Tranquil","Ugly","Valuable","Warlike","Warm","Watery","Weak","Young","Disagreeable","Disgusting","Drab","Dry","Dull","Empty","Enormous","Exotic","Faded","Familiar","Fancy","Fat","Feeble","Feminine","Festive","Flawless","Fresh","Full","Glorious","Good","Magnificent","Masculine","Mature","Messy","Mighty","Military","Modern","Extravagant","Mundane","Mysterious","Natural","Nondescript","Odd","Pale","Petite","Poor","Powerful","Quaint","Rare","Reassuring"],
+["Meaning Verb","Attainment","Starting","Neglect","Fight","Recruit","Triumph","Violate","Oppose","Malice","Communicate","Persecute","Increase","Decrease","Abandon","Gratify","Inquire","Antagonize","Move","Waste","Truce","Expose","Haggle","Imprison","Release","Celebrate","Develop","Travel","Block","Harm","Debase","Overindulge","Adjourn","Adversity","Kill","Disrupt","Usurp","Create","Betray","Agree","Abuse","Excitement","Activity","Assist","Care","Negligence","Passion","Work","Control","Attract","Failure","Pursue","Vengeance","Proceedings","Dispute","Punish","Guide","Transform","Overthrow","Oppress","Change","Release","Befriend","Judge","Desert","Dominate","Procrastinate","Praise","Separate","Take","Break","Heal","Delay","Stop","Lie","Return","Imitate","Struggle","Inform","Bestow","Postpone","Oppress","Inspect","Ambush","Spy","Attach","Carry","Open","Carelessness","Ruin","Extravagance","Trick","Arrive","Propose","Divide","Refuse","Mistrust","Deceive","Cruelty","Intolerance","Trust"],
+["Meaning Subject","Goals","Dreams","Environment","Outside","Inside","Reality","Allies","Enemies","Evil","Good","Emotions","Opposition","War","Peace","Innocent","Love","Spirit","Intellect","Ideas","Joy","Advice","Plot","Competition","Prison","Illness","Food","Attention","Success","Failure","Travel","Jealousy","Dispute","Home","Investment","Suffering","Wishes","Tactics","Stalemate","Randomness","Misfortune","Victory","Dispute","Riches","Normal","Technology","Hope","Magic","Illusions","Portals","Danger","Weapons","Animals","Weather","Elements","Nature","Masses","Leadership","Fame","Anger","Information","Messages","Energy","Balance","Tension","Friendship","Physical","Project","Pleasures","Pain","Possessions","Benefits","Plans","Lies","Expectations","Legal","Bureaucracy","Business","Path","News","Exterior","Death","Disruption","Power","Burden","Intrigues","Fears","Ambush","Rumor","Wounds","Extravagance","Representative","Adversities","Opulence","Liberty","Military","Mundane","Trials","Masses","Vehicle","Art"],
+["Adventure Tone","Action","Activity","Adventurous","Adversity","Aggressive","Amusing","Anxious","Attainment","Average","Bizarre","Bleak","Bold","Busy","Calm","Cheerful","Colorful","Combative","Competitive","Conflict","Crazy","Creepy","Dangerous","Dark","Emotional","Energetic","Epic","Evil","Exotic","Exterior","Failure","Fame","Familiar","Fearful","Festive","Fierce","Fortunate","Frantic","Fresh","Frightening","Glorious","Goals","Hard","Harsh","Heavy","Historical","Hopeful","Horrible","Horror","Important","Inquire","Inspect","Intellect","Intense","Interesting","Intrigue","Lavish","Legal","Lethal","Light","Macabre","Magnificent","Majestic","Mature","Meaningful","Mechanical","Messy","Military","Misfortune","Mistrust","Modern","Mundane","Mystery","Natural","Normal","Odd","Personal","Physical","Power","Pursuit","Quaint","Random","Rare","Reassuring","Remarkable","Rough","Rustic","Scary","Simple","Slow","Social","Strong","Struggle","Tension","Travel","Trials","Vengeance","Very","Violent","Warlike","Wild"],
+["Animal Action","Abandon","Abnormal","Aggressive","Angry","Anxious","Assist","Attack","Befriend","Bestow","Bizarre","Bold","Break","Busy","Calm","Careful","Careless","Cautious","Ceaseless","Change","Combative","Curious","Dangerous","Deliberate","Disinterested","Disrupt","Distracted","Dominate","Energetic","Excited","Exotic","Familiar","Fearful","Feeble","Ferocious","Fierce","Fight","Flee","Follow","Food","Frantic","Friendship","Frightening","Generous","Gentle","Graceful","Harm","Hasty","Helpful","Helpless","Hungry","Hunt","Ignore","Imitate","Implore","Imprison","Inspect","Intense","Irritating","Juvenile","Lazy","Leave","Lethal","Loud","Loyal","Messy","Mistrust","Move","Mundane","Mysterious","Natural","Neglect","Normal","Observe","Odd","Oppose","Playful","Protect","Pursue","Quiet","Reassuring","Release","Return","Scary","Simple","Slow","Strange","Struggle","Swift","Tactics","Take","Threatening","Tranquil","Transform","Trick","Trust","Violent","Warn","Waste","Wild","Yield"],
+["Cavern Description","Activity","Ancient","Animals","Aromatic","Art","Beautiful","Bizarre","Bleak","Blocked","Boulder","Bright","Cliff","Climb","Closed","Cold","Collapsed","Colorful","Cracked","Cramped","Crawl","Creature","Creepy","Crumbling","Curious","Damaged","Dangerous","Dark","Difficult","Dirty","Discouraging","Dripping","Dry","Echo","Elements","Empty","Enormous","Exit","Exotic","Fall","Flora","Frightening","Full","Fungus","Good","Hard","Harm","Harsh","Hole","Huge","Icy","Interesting","Large","Ledge","Lethal","Light","Loud","Magnificent","Message","Messy","Minerals","Misfortune","Mist","Mysterious","Natural","Nature","Normal","Occupied","Odd","Open","Path","Plants","Pool","Quiet","Reassuring","Remarkable","Riches","River","Rock","Rough","Scary","Simple","Slippery","Slope","Small","Smelly","Smooth","Sounds","Stalactites","Strange","Threatening","Tight","Tranquil","Treasure","Unnatural","Unstable","Untouched","Warm","Waste","Water","Wind"],
+["Char. Combat Action","Abandon","Abuse","Aggressive","Agree","Ally","Ambush","Amuse","Anger","Antagonize","Anxious","Assist","Attack","Betray","Block","Bold","Brave","Break","Calm","Careless","Carry","Cautious","Celebrate","Change","Charge","Communicate","Compete","Control","Crazy","Cruel","Damage","Deceive","Defend","Defiant","Delay","Disrupt","Divide","Dominate","Energetic","Enthusiastic","Exotic","Expectation","Fearful","Ferocious","Fierce","Fight","Flee","Frantic","Free","Frightening","Harm","Harsh","Hasty","Hide","Imitate","Imprison","Kill","Lead","Lethal","Liberty","Lie","Loud","Loyal","Magic","Mechanical","Mighty","Military","Mock","Move","Mysterious","Normal","Odd","Open","Oppose","Pain","Path","Prepare","Punish","Pursue","Rough","Rude","Ruin","Ruthless","Simple","Slow","Spy","Stop","Struggle","Suppress","Swift","Take","Technology","Threaten","Trick","Truce","Usurp","Vehicle","Vengeance","Waste","Weapon","Withdraw"],
+["Char. General Action","Abandon","Aggressive","Amusing","Anger","Antagonize","Anxious","Assist","Bestow","Betray","Bizarre","Block","Bold","Break","Calm","Care","Careful","Careless","Celebrate","Change","Combative","Communicate","Control","Crazy","Creepy","Dangerous","Deceive","Decrease","Defiant","Delay","Disrupt","Dominate","Efficient","Energetic","Excited","Exotic","Expose","Fearful","Feeble","Fierce","Fight","Foolish","Frantic","Frightening","Generous","Gentle","Harm","Harsh","Hasty","Helpful","Imitate","Important","Imprison","Increase","Inspect","Intense","Juvenile","Kind","Lazy","Leadership","Lethal","Loud","Loyal","Mature","Meaningful","Messy","Move","Mundane","Mysterious","Nice","Normal","Odd","Official","Open","Oppose","Passion","Peace","Playful","Pleasures","Possessions","Punish","Pursue","Release","Return","Simple","Slow","Start","Stop","Struggle","Swift","Tactics","Take","Technology","Threatening","Trust","Violent","Waste","Weapons","Wild","Work","Yield"],
+
+["Char. Background","Abandoned","Abuse","Academic","Activity","Adventurous","Adversity","Art","Assist","Average","Bad","Bizarre","Bleak","Bold","Burden","Business","Care","Career","Chaotic","Cheat","Combat","Commitment","Community","Competition","Conflict","Control","Crime","Damaged","Danger","Death","Deceive","Decrease","Defeated","Disaster","Dispute","Emotion","Environment","Exile","Exotic","Experience","Failure","Faith","Fame","Family","Fortunate","Free","Freedom","Friend","Gifts","Good","Guided","Hard","Harm","Harsh","Heal","Helped","Heroic","Humble","Humiliation","Imprisonment","Independent","Inherit","Injury","Injustice","Legal","Loss","Military","Mistake","Mundane","Nature","Outsider","Person","Place","Poor","Power","Prestige","Privilege","Pursued","Recruited","Religion","Rural","Saved","Search","Seclusion","Service","Sheltered","Skill","Strange","Successful","Survival","Tradition","Training","Trauma","Travel","Urban","War","Wealth","Wild","Work","Wounded","Youth"],
+["Char. Conversation","Abuse","Advice","Aggressive","Agree","Amusing","Angry","Anxious","Assist","Awkward","Betray","Bizarre","Bleak","Bold","Business","Calm","Careful","Careless","Cautious","Cheerful","Classy","Cold","Colorful","Combative","Crazy","Creepy","Curious","Defiant","Delightful","Disagreeable","Dispute","Efficient","Energetic","Enthusiastic","Excited","Fearful","Fierce","Foolish","Frantic","Frightening","Generous","Gentle","Glad","Grateful","Haggle","Happy","Harsh","Hasty","Helpful","Helpless","Hopeless","Ideas","Inform","Innocent","Inquire","Intense","Interesting","Intolerance","Irritating","Joyful","Judgmental","Juvenile","Kind","Leadership","Lie","Loud","Loving","Loyal","Macabre","Mature","Meaningful","Miserable","Mistrust","Mocking","Mundane","Mysterious","News","Nice","Normal","Odd","Offensive","Official","Oppose","Peace","Plans","Playful","Polite","Positive","Praise","Quarrelsome","Quiet","Reassuring","Refuse","Rude","Rumor","Simple","Threatening","Truce","Trust","Warm","Wild"],
+["Char. General Descr.","Abnormal","Active","Adventurous","Aggressive","Agreeable","Ally","Ancient","Angry","Anxious","Armed","Aromatic","Arrogant","Attractive","Awkward","Beautiful","Bizarre","Bleak","Bold","Brave","Busy","Calm","Capable","Careful","Careless","Caring","Cautious","Cheerful","Classy","Clean","Clumsy","Colorful","Combative","Commanding","Common","Competitive","Confident","Crazy","Curious","Dangerous","Different","Difficult","Dirty","Disciplined","Educated","Elegant","Erratic","Exotic","Fancy","Fast","Foul","Frightened","Gentle","Harmful","Helpful","Heroic","Humorous","Hurt","Ignorant","Impulsive","Inept","Informative","Intelligent","Interesting","Intimidating","Intrusive","Large","Loud","Meek","Naive","Old","Passive","Polite","Poor","Powerful","Powerless","Primitive","Principled","Quiet","Respectful","Rough","Rude","Simple","Skilled","Slow","Small","Sneaky","Sophisticated","Strange","Strong","Supportive","Surprising","Sweet","Trained","Ugly","Uniformed","Unusual","Weak","Wealthy","Wild","Young"],
+["Char. Physical Descr.","Abnormal","Armed","Aromatic","Athletic","Attractive","Average","Bald","Beautiful","Bizarre","Brutish","Casual","Classy","Clean","Clothing","Colorful","Common","Cool","Creepy","Cute","Dainty","Delicate","Desperate","Different","Dirty","Drab","Elegant","Equipment","Exotic","Expensive","Extravagant","Eyewear","Familiar","Fancy","Features","Feminine","Festive","Frail","Hair","Hairy","Headwear","Heavy","Hurt","Innocent","Insignia","Intense","Interesting","Intimidating","Jewelry","Large","Lavish","Lean","Limbs","Lithe","Masculine","Mature","Messy","Mighty","Modern","Mundane","Muscular","Mysterious","Natural","Neat","Normal","Odd","Official","Old","Petite","Piercing","Powerful","Professional","Reassuring","Regal","Remarkable","Rough","Rustic","Scar","Scary","Scented","Scholarly","Short","Simple","Sinister","Small","Smelly","Stocky","Strange","Striking","Strong","Stylish","Tall","Tattoo","Tools","Trendy","Unusual","Very","Weak","Weapon","Wounded","Young"],
+["Char. Identity","Abandoned","Administrator","Adventurous","Adversary","Advisor","Ally","Art","Artist","Assistant","Athlete","Bureaucrat","Business","Combatant","Competitor","Controller","Crafter","Creator","Criminal","Deceiver","Deliverer","Dependent","Driver/Pilot","Elite","Enemy","Enforcement","Enforcer","Engineer","Entertainer","Executive","Exotic","Expert","Explorer","Family","Farmer","Fighter","Fixer","Foreigner","Friend","Gambler","Gatherer","Guard","Guardian","Healer","Helpless","Hero","Hunter","Information","Innocent","Inspector","Intellectual","Investigator","Judge","Killer","Laborer","Lackey","Law","Leader","Legal","Mechanical","Mediator","Merchant","Messenger","Military","Mundane","Mystery","Official","Organizer","Outsider","Performer","Persecutor","Planner","Pleaser","Power","Professional","Protector","Public","Punish","Radical","Religious","Representative","Rogue","Ruler","Scholar","Scientist","Scout","Servant","Socialite","Soldier","Student","Subverter","Supporter","Survivor","Teacher","Thief","Thug","Trader","Victim","Villain","Wanderer","Warrior"],
+["Char. Motivation","Adventure","Adversity","Ambition","Anger","Approval","Art","Attain","Business","Change","Character","Conflict","Control","Create","Danger","Death","Deceive","Destroy","Diminish","Disrupt","Emotion","Enemy","Environment","Escape","Exotic","Failure","Fame","Family","Fear","Fight","Find","Free","Friend","Goal","Gratify","Group","Guide","Guilt","Hate","Heal","Help","Hide","Home","Hope","Idea","Illness","Important","Imprison","Increase","Information","Innocent","Intellect","Intolerance","Investment","Jealousy","Joy","Justice","Leader","Legal","Loss","Love","Loyalty","Malice","Misfortune","Mistrust","Mundane","Mysterious","Nature","Object","Obligation","Official","Oppose","Pain","Passion","Path","Peace","Physical","Place","Plan","Pleasure","Power","Pride","Protect","Pursue","Rare","Recover","Reveal","Revenge","Riches","Search","Serve","Start","Stop","Strange","Struggle","Success","Suffering","Support","Take","Transform","Travel"],
+["Char. Personality","Active","Adventurous","Aggressive","Agreeable","Ambitious","Amusing","Angry","Annoying","Anxious","Arrogant","Average","Awkward","Bad","Bitter","Bold","Brave","Calm","Careful","Careless","Classy","Cold","Collector","Committed","Competitive","Confident","Control","Crazy","Creative","Crude","Curious","Deceptive","Determined","Devoted","Dull","Emotion","Empathetic","Exotic","Fair","Fastidious","Follower","Foolish","Friendly","Good","Gourmet","Greed","Haunted","Helpful","Honest","Honor","Humble","Humorous","Inconsistent","Independent","Interesting","Intolerant","Irresponsible","Knowledgable","Larcenous","Leader","Likable","Loyal","Manipulative","Mercurial","Naive","Nervous","Oblivious","Obstinate","Optimistic","Perceptive","Perfectionist","Practical","Prepared","Principled","Protect","Quiet","Quirky","Rash","Rational","Respectful","Responsible","Restless","Risk","Rude","Savvy","Searching","Selfish","Selfless","Shallow","Social","Strange","Strong","Studious","Superstitious","Tolerant","Vindictive","Vocal","Wary","Weak","Wild","Wise"],
+["Char. Traits & Flaws","Academic","Additional","Adversity","Animal","Assist","Attack","Attract","Beautiful","Benefits","Bestow","Bizarre","Block","Burden","Combat","Communicate","Connection","Control","Create","Damaged","Dangerous","Decrease","Defense","Delicate","Different","Dominate","Driven","Emotion","Enemy","Energy","Environment","Exotic","Failure","Fame","Familiar","Fast","Feeble","Flawless","Focused","Fortunate","Friends","Good","Healthy","Illness","Impaired","Increase","Information","Inspect","Intellect","Intense","Interesting","Lacking","Large","Leadership","Legal","Less","Lethal","Limited","Loyal","Mental","Military","Misfortune","Missing","Move","Multi","Nature","Object","Odd","Old","Partial","Passion","Perception","Physical","Poor","Possessions","Power","Principles","Public","Rare","Remarkable","Resistant","Resource","Rich","Sense","Skill","Small","Social","Specialized","Spirit","Strong","Suffering","Technical","Technology","Tough","Travel","Trouble","Unusual","Very","Weak","Weapon","Young"],
+["City Descr.","Activity","Aggressive","Aromatic","Average","Beautiful","Bleak","Block","Bridge","Bustling","Calm","Chaotic","Clean","Cold","Commerce","Conflict","Control","Crime","Dangerous","Dense","Developed","Dirty","Efficient","Energy","Enormous","Environment","Exotic","Extravagant","Festive","Flawless","Frightening","Government","Happy","Harsh","Healthy","Helpful","Hills","History","Illness","Important","Impressive","Industry","Interesting","Intrigues","Isolated","Lacking","Lake","Large","Lavish","Leadership","Liberty","Loud","Magnificent","Masses","Meaningful","Mechanical","Messy","Mighty","Military","Miserable","Misfortune","Modern","Mountain","Mundane","Mysterious","Nature","Odd","Old","Oppress","Opulence","Peace","Poor","Powerful","Protected","Public","Quiet","Rare","Reassuring","Remarkable","River","Rough","Ruined","Rustic","Simple","Small","Sparse","Structures","Struggle","Success","Suffering","Technology","Tension","Travel","Troubled","Valuable","Warm","Water","Weak","Weather","Wild","Work"],
+["Clue Descr.","Abandoned",  "Abnormal",  "Academic",  "Amusing",  "Animal",  "Aromatic",  "Art",  "Awkward",  "Beautiful",  "Bizarre",  "Business",  "Careless",  "Classy",  "Clean",  "Clothing",  "Cold",  "Colorful",  "Communication",  "Complicated",  "Container",  "Creepy",  "Damaged",  "Dangerous",  "Delicate",  "Descriptive",  "Detailed",  "Dirty",  "Disgusting",  "Dispute",  "Empty",  "Exotic",  "Extravagant",  "Familiar",  "Fancy",  "Feminine",  "Festive",  "Food",  "Frightening",  "Furnishing",  "Hard",  "Heavy",  "Hidden",  "Home",  "Information",  "Intense",  "Intrigue",  "Investment",  "Juvenile",  "Large",  "Legal",  "Lethal",  "Lies",  "Loud",  "Luxury",  "Magnificent",  "Masculine",  "Meaningful",  "Mechanical",  "Messy",  "Military",  "Misfortune",  "Modern",  "Motive",  "Mundane",  "Mysterious",  "Natural",  "Neat",  "Obscure",  "Odd",  "Official",  "Old",  "Partial",  "Passion",  "Personal",  "Plot",  "Portal",  "Possession",  "Powerful",  "Quaint",  "Rare",  "Reassuring",  "Ruined",  "Rumor",  "Scientific",  "Simple",  "Small",  "Soft",  "Technology",  "Threatening",  "Tool",  "Travel",  "Uncertain",  "Valuable",  "Vehicle",  "Warm",  "Waste",  "Wealth",  "Weapon",  "Wet",  "Work"],
+
+["Creature Abilities","Ambush","Animate","Armor","Arrive","Attach","Attack","Attract","Bite","Block","Blunt","Break","Breath","Carry","Change","Climb","Cold","Common","Communicate","Conceal","Contact","Control","Create","Damage","Dark","Death","Deceive","Decrease","Defense","Depower","Detect","Disrupt","Distract","Dominate","Drain","Element","Energy","Enhanced","Entangle","Environment","Exotic","Extra","Fear","Fight","Fire","Flight","Harm","Heal","Illness","Illusion","Imitate","Immune","Imprison","Increase","Intelligent","Itself","Kill","Lethal","Light","Limited","Magic","Mind","Move","Multiple","Natural","Normal","Open","Others","Paralyze","Physical","Pierce","Poison","Proximity","Pursue","Ranged","Rechargeable","Resistance","Self-Sufficient","Senses","Skill","Sleep","Speed","Spy","Stop","Stun","Substance","Summon","Suppress","Swim","Take","Telepathy","Touch","Transform","Transformation","Travel","Trick","Uncommon","Vision","Vulnerable","Weak","Weapon"],
+["Creature Descr.","Aggressive","Agile","Air","Alien","Amorphous","Animal","Aquatic","Armored","Avian","Beast","Beautiful","Bony","Bubbling","Carapace","Clawed","Clothed","Cold","Colors","Composite","Constructed","Decayed","Defensive","Dripping","Elemental","Exotic","Extra Limbs","Fangs","Feminine","Feral","Filthy","Fire","Fungal","Furry","Gaunt","Glowing","Group","Growling","Healthy","Horns","Humanoid","Inscribed","Insect-like","Insubstantial","Intelligent","Intimidating","Large","Levitating","Liquid","Loud","Magical","Mammalian","Mandibles","Many-eyed","Masculine","Metallic","Movement","Mutant","Natural","Nightmarish","Notable Ears","Object","Odorous","Passive","Plant","Pulsating","Reptilian","Robotic","Rooted","Rough","Shape","Shifting","Silent","Simple","Slender","Small","Solid Color","Solitary","Spiderlike","Spiked","Steaming","Sticky","Stinger","Stone","Supernatural","Tail","Tentacled","Tongue","Toothy","Transparent","Tree-like","Twisted","Undead","Unnatural","Verbal","Warm","Weak","Weapon","Wings","Wooden","Wormish"],
+["Dungeon Descr.","Abandoned","Activity","Adversity","Ambush","Ancient","Animals","Aromatic","Art","Beautiful","Bizarre","Bleak","Chamber","Clean","Closed","Cold","Collapsed","Colorful","Creature","Creepy","Damaged","Danger","Dark","Dirty","Door","Dry","Elements","Empty","Encounter","Enemies","Enormous","Evil","Exit","Exotic","Extravagant","Faded","Familiar","Fancy","Fears","Foreboding","Full","Furnishings","Gate","Good","Harm","Heavy","Helpful","Hole","Important","Information","Interesting","Large","Lavish","Lethal","Light","Macabre","Magnificent","Malice","Meaningful","Mechanical","Messages","Messy","Mighty","Military","Misfortune","Modern","Mundane","Mysterious","Natural","Neglect","Normal","Object","Occupied","Odd","Open","Passage","Path","Portal","Possessions","Rare","Reassuring","Remarkable","Riches","Room","Rough","Ruined","Rustic","Scary","Simple","Small","Smelly","Sound","Stairs","Stonework","Technology","Trap","Treasure","Unnatural","Valuable","Warm","Watery"],
+["Forest Descr.","Abnormal","Activity","Adversity","Aggressive","Ambush","Ancient","Animals","Aromatic","Art","Assist","Average","Beautiful","Bizarre","Bleak","Block","Boulder","Cave","Cliff","Cold","Colorful","Combative","Communicate","Creepy","Damaged","Danger","Dark","Death","Delicate","Dry","Elements","Enormous","Environment","Exotic","Fearful","Feeble","Fierce","Food","Fortunate","Fresh","Harsh","Healthy","Helpful","Important","Information","Intense","Interesting","Lacking","Lake","Large","Lean","Ledge","Lethal","Loud","Macabre","Magnificent","Majestic","Masses","Mature","Messages","Mighty","Mundane","Mysterious","Natural","Nature","Nondescript","Normal","Odd","Old","Path","Peaceful","Plants","Pond","Possessions","Powerful","Pursue","Quiet","Rare","Reassuring","Remarkable","River","Rocks","Rough","Ruined","Scary","Simple","Slope","Small","Sounds","Strong","Threatening","Tranquil","Tree","Valuable","Violent","Warm","Watery","Weak","Weather","Wild","Young"],
+["General Loc. Descr.","Abandoned","Active","Amusing","Ancient","Aromatic","Artistic","Atmosphere","Average","Beautiful","Bizarre","Bleak","Bright","Calm","Classy","Clean","Cluttered","Cold","Colorful","Confusing","Creepy","Cute","Damaged","Dangerous","Dark","Delightful","Dirty","Disgusting","Domestic","Drab","Dry","Echo","Empty","Enclosed","Enormous","Exclusive","Exotic","Expected","Extravagant","Familiar","Fancy","Festive","Fortunate","Frightening","Full","Harmful","Harsh","Helpful","Horrible","Important","Inactive","Intense","Intriguing","Lavish","Lonely","Long","Loud","Magnificent","Majestic","Meaningful","Messy","Military","Modern","Moving","Mundane","Mysterious","Natural","Negative","New","Odd","Official","Open","Ornate","Peaceful","Personal","Positive","Primitive","Protection","Purposeful","Quaint","Quiet","Reassuring","Resourceful","Ruined","Rustic","Safe","Simple","Small","Smelly","Sounds","Spacious","Storage","Strange","Tall","Threatening","Tranquil","Unexpected","Unsteady","Unusual","Warm","Watery"],
+["Magic Item Descr.","Animal","Animate","Area","Armor","Assist","Attack","Attract","Benefit","Bestow","Block","Book","Change","Clothing","Cloud","Cold","Communication","Container","Control","Create","Cursed","Damage","Death","Deceit","Decrease","Defense","Destroy","Detect","Dimensions","Elements","Emotion","Energy","Enhance","Environment","Escape","Evil","Exotic","Explode","Fear","Fire","Flight","Food","Gem","Good","Group","Harm","Heal","Health","Helpful","Illness","Illusion","Imbue","Imitate","Increase","Information","Inhibit","Instant","Jewelry","Lethal","Life","Light","Limited","Liquid","Mental","Monster","Multi","Nature","Object","Orb","Others","Physical","Plants","Poison","Potion","Power","Ranged","Resistance","Restore","Ring","Rope","Rune","Safety","Scroll","Self","Senses","Skill","Special","Speed","Spell","Staff","Strange","Summon","Sword","Tool","Transform","Trap","Travel","Utility","Wand","Water","Weapon"],
+["General Items Desc.","Active","Amusing","Ancient","Aromatic","Artistic","Average","Beautiful","Bizarre","Bright","Broken","Classy","Clothing","Cold","Colorful","Communication","Confusing","Creepy","Cute","Damaged","Dangerous","Deliberate","Delicate","Delightful","Desired","Disgusting","Domestic","Empty","Energy","Enormous","Exotic","Expected","Extravagant","Faded","Familiar","Fancy","Flora","Food","Fortunate","Fragile","Frightening","Fuel","Garbage","Hard","Harmful","Healing","Heavy","Helpful","Hidden","Horrible","Important","Inactive","Intriguing","Large","Lethal","Light","Liquid","Loud","Magnificent","Majestic","Meaningful","Mechanical","Military","Modern","Moving","Multiple","Mundane","Mysterious","Natural","Negative","New","Odd","Official","Old","Ornate","Personal","Positive","Powerful","Primitive","Prized","Rare","Reassuring","Resource","Ruined","Single","Small","Smelly","Smooth","Soft","Strange","Threatening","Tool","Travel","Unexpected","Unusual","Useful","Useless","Valuable","Warm","Watery","Weapon"],
+["Small Item Desc.","Active","Aromatic","Art","Beautiful","Bizarre","Broken","Business","Cheerful","Clean","Clothing","Colorful","Consumable","Container","Cool","Creepy","Cute","Damaged","Dangerous","Delicate","Delightful","Dirty","Drab","Dry","Dull","Empty","Exotic","Extravagant","Faded","Familiar","Fancy","Feminine","Fixable","Flawless","Food","Fragile","Fresh","Full","Good","Hard","Harmful","Heavy","Helpful","Historical","Important","Information","Interesting","Jewelry","Juvenile","Lavish","Legal","Lethal","Light","Liquid","Magnificent","Masculine","Meaningful","Mechanical","Modern","Mundane","Mysterious","Natural","New","Nondescript","Normal","Odd","Official","Old","Oversized","Personal","Petite","Playful","Possession","Projectile","Quaint","Rare","Reassuring","Remarkable","Riches","Rotten","Rough","Ruined","Rustic","Scary","Sharp","Simple","Small","Small","Smooth","Soft","Technology","Tool","Transparent","Ugly","Utility","Valuable","Warm","Watery","Weapon","Worn","Written"],
+["Planet Desc.","Abandoned","Abnormal","Abundant","Activity","Advanced","Aggressive","Allies","Ancient","Animals","Atmosphere","Average","Barren","Beautiful","Bizarre","Catastrophe","Cities","Civilization","Clouds","Cold","Colorful","Combative","Communicate","Conflict","Damaged","Danger","Death","Defense","Desert","Dry","Dull","Elements","Empty","Energy","Enormous","Environment","Exotic","Frightening","Gaseous","Habitable","Harsh","Healthy","Helpful","Hostile","Hot","Intense","Interesting","Large","Lethal","Life","Lovely","Magnificent","Majestic","Masses","Mature","Mechanical","Messages","Mighty","Military","Misfortune","Modern","Moon","Mountainous","Multi","Mundane","Mysterious","Natural","Nature","Nondescript","Normal","Oceans","Odd","Peaceful","People","Populated","Powerful","Primitive","Rare","Remarkable","Riches","Rings","Rocky","Rough","Ruined","Ruins","Scary","Simple","Small","Star","Strong","Suffering","Technology","Threatening","Tranquil","Valuable","Violent","Warm","Water","Weak","Weather","Wild"],
+["Plot Twist","Action","Attack","Bad","Barrier","Betray","Business","Character","Conclude","Conditional","Conflict","Connection","Consequence","Control","Danger","Death","Delay","Destroy","Diminish","Disaster","Discover","Emotion","Enemy","Enhance","Enter","Escape","Evidence","Exotic","Failure","Family","Free","Friend","Good","Group","Harm","Headquarters","Help","Helpless","Hidden","Idea","Immediate","Impending","Important","Incapacitate","Information","Injustice","Leader","Legal","Lethal","Lie","Limit","Location","Lucky","Mental","Missing","Mundane","Mystery","Necessary","News","Non-lethal","Object","Oppose","Outcast","Overcome","Past","Peace","Personal","Persuade","Physical","Plan","Power","Prepare","Problem","Promise","Protect","Public","Pursue","Rare","Remote","Repair","Repeat","Require","Rescue","Resource","Response","Reveal","Revenge","Reversal","Reward","Skill","Social","Solution","Success","Tension","Trap","Travel","Unknown","Unlikely","Unusual","Urgent","Useful"],
+
+["Powers","Absorb","Adversity","Alter","Animals","Animate","Assist","Attach","Attack","Block","Body","Change","Chemical","Cold","Colorful","Combat","Combine","Communicate","Control","Cosmetic","Create","Damage","Dark","Death","Deceive","Defense","Delay","Destroy","Detect","Dimensions","Diminish","Diminish","Disrupt","Distance","Dominate","Duplicate","Electricity","Elements","Emission","Emotion","Enemies","Energy","Enhance","Environment","Exotic","Explosion","Extra","Fire","Flight","Free","Friend","Harm","Heal","Heat","Help","Hide","Illusion","Imbue","Immunity","Increase","Information","Life","Light","Limb","Location","Magic","Major","Manipulate","Matter","Mental","Minor","Natural","Nature","Object","Others","Physical","Plants","Poison","Power","Protect","Radius","Ranged","Reflect","Repel","Resistance","Reveal","Self","Sense","Skill","Spirit","Strange","Summon","Switch","Take","Technology","Time","Transform","Trap","Travel","Weapon","Weather"],
+["Sounds","Activity","Agree","Anger","Animals","Approach","Assist","Attention","Attract","Battle","Befriend","Beseeching","Bizarre","Busy","Calm","Carelessness","Ceaseless","Celebrate","Cheerful","Combative","Communicate","Crazy","Creaking","Creepy","Cries","Danger","Defiant","Disagreeable","Dispute","Distant","Emotions","Energetic","Exotic","Explosion","Familiar","Feminine","Ferocious","Fierce","Fight","Footsteps","Frantic","Frightening","Growl","Help","Helpful","Imitate","Important","Indistinct","Industry","Information","Innocent","Inquire","Intense","Interesting","Irritating","Juvenile","Kindly","Lies","Loud","Machinery","Masculine","Masses","Meaningful","Messages","Metallic","Mysterious","Natural","Near","Normal","Odd","Praise","Propose","Pursue","Quietly","Reassuring","Remarkable","Roar","Rumbling","Scary","Scraping","Shouts","Simple","Slowly","Softly","Starting","Stopping","Strange","Strong","Struggle","Suffering","Tapping","Technology","Threatening","Tranquil","Truce","Voices","Warlike","Warning","Water","Weather","Wild"],
+["Spell Effects","Animal","Animate","Assist","Attack","Attract","Bestow","Bizarre","Block","Break","Bright","Burning","Change","Cloud","Cold","Communicate","Conceal","Conjure","Control","Counteract","Create","Creature","Curse","Damage","Dark","Death","Deceive","Decrease","Defense","Destroy","Detect","Diminish","Disease","Dominate","Duplicate","Earth","Elements","Emotion","Enemies","Energy","Enhance","Environment","Exotic","Expose","Fire","Fix","Food","Free","Group","Guide","Hamper","Harm","Heal","Helpful","Ice","Illusion","Imbue","Immunity","Imprison","Information","Inspect","Life","Light","Limitation","Liquid","Loud","Manipulation ","Mind","Nature","Object","Others","Pain","Physical","Plant","Poison","Portal","Powerful","Protect","Radius","Ranged","Resistance","Restore","Self","Senses","Shield","Soul","Strength","Stun","Summon","Time","Transformation","Trap","Travel","Trigger","Uncertain","Undead","Wall","Water","Weak","Weapon","Weather"],
+["Starship Descr.","Abnormal","Activity","Adversity","Assist","Automated","Average","Battle","Beautiful","Bestow","Bizarre","Bleak","Block","Bright","Business","Clean","Cold","Colorful","Combative","Communicate","Computer","Contain","Controls","Creepy","Crew","Damaged","Danger","Dark","Death","Defense","Empty","Energy","Engine","Enormous","Environment","Exit","Exotic","Exterior","Fancy","Fearful","Food","Full","Health","Helpful","Important","Imprison","Inform","Information","Inquire","Interesting","Lacking","Large","Lavish","Leadership","Lethal","Loud","Magnificent","Maintenance","Majestic","Masses","Meaningful","Mechanical","Messages","Messy","Mighty","Military","Modern","Mundane","Mysterious","Natural","Normal","Odd","Portal","Possessions","Power","Powerful","Prison","Quiet","Rare","Reassuring","Remarkable","Room","Rough","Ruined","Scary","Simple","Small","Sounds","Start","Stop","Supplies","Survival","System","Tactics","Technology","Travel","Valuable","Vehicle","Warm","Weapon","Work"],
+["Suspect Descr.","Abnormal","Active","Aggressive","Ambush","Angry","Animal","Anxious","Armed","Average","Beautiful","Bizarre","Bold","Busy","Calm","Careless","Cautious","Cheerful","Classy","Combative","Crazy","Creepy","Curious","Dangerous","Defeated","Defiant","Delightful","Disgusting","Energetic","Enormous","Evil","Excited","Exotic","Expected","Familiar","Fast","Fearful","Feeble","Ferocious","Foe","Foolish","Fortunate","Frantic","Friend","Frightening","Full Large","Generous","Gentle","Glad","Graceful","Happy","Harmful","Helpful","Helpless","Hidden","Horrible","Important","Inactive","Innocent","Intense","Lazy","Lonely","Loud","Loyal","Majestic","Mighty","Military","Miserable","Multiple","Mundane","Mysterious","Natural","Negative","Odd","Official","Peaceful","Playful","Positive","Powerful","Primitive","Quiet","Reassuring","Resourceful","Single","Skilled","Slow","Small","Smelly","Strange","Strong","Swift","Tall","Threatening","Trap","Unexpected","Unnatural","Unusual","Violent","Watery","Weak","Wild"]
+];
+
+</script>
+</body>
+</html>
