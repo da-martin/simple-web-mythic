@@ -1,6 +1,8 @@
 # simple-web-mythic
 
-> This tool is based on Mythic Game Master Emulator, Mythic Variations, Mythic Variations 2, and the Mythic Magazines by Tana Pigeon. Visit [www.wordmillgames.com] (http://www.wordmillgames.com) for more information and lots of awesomeness.
+[You can try this tool here](https://da-martin.github.io/simple-web-mythic/)
+
+> This tool is based on Mythic Game Master Emulator, Mythic Variations, Mythic Variations 2, and the Mythic Magazines by Tana Pigeon. Visit [www.wordmillgames.com](http://www.wordmillgames.com) for more information and lots of awesomeness.
 
 My main goal with this is having a simple Mythic GME tool that can be used on any device, even offline. So that means I'm using just vanilla JavaScript and CSS in a single HTML file. I'm even more limited by my little coding knowledge (I've finished the basic JavaScript course and I'm going through the intermediate HTML & CSS one at theodinproject.com as I'm releasing this).
 
