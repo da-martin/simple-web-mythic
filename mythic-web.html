@@ -57,7 +57,7 @@
     #main {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: space-evenly;
     }
     
     #results {
@@ -259,7 +259,7 @@
     loadSelectWithCategoryTables(selectEventFocus,tablesThemes);
   
     const selectCharacterTables = document.querySelector('#character-tables');
-    loadSelectWithCategoryTables(selectCharacterTables,tablesNPCS);
+    loadSelectWithCategoryTables(selectCharacterTables,tablesCharacters);
   
     const selectLocationTables = document.querySelector('#location-tables');
     loadSelectWithCategoryTables(selectLocationTables,tablesLocations);
@@ -316,37 +316,37 @@
   
   const btnD4 = document.querySelector('#d4-button');
   btnD4.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "D4 ROLL: [" + (Math.floor(Math.random() * 4) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d4 ROLL: [" + (Math.floor(Math.random() * 4) + 1) + "]\n";
   })
   
   const btnD6 = document.querySelector('#d6-button');
   btnD6.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "D6 ROLL: [" + (Math.floor(Math.random() * 6) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d6 ROLL: [" + (Math.floor(Math.random() * 6) + 1) + "]\n";
   })
   
   const btnD8 = document.querySelector('#d8-button');
   btnD8.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "D8 ROLL: [" + (Math.floor(Math.random() * 8) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d8 ROLL: [" + (Math.floor(Math.random() * 8) + 1) + "]\n";
   })
   
   const btnD10 = document.querySelector('#d10-button');
   btnD10.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "D10 ROLL: [" + (Math.floor(Math.random() * 10) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d10 ROLL: [" + (Math.floor(Math.random() * 10) + 1) + "]\n";
   })
   
   const btnD12 = document.querySelector('#d12-button');
   btnD12.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "D12 ROLL: [" + (Math.floor(Math.random() * 12) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d12 ROLL: [" + (Math.floor(Math.random() * 12) + 1) + "]\n";
   })
   
   const btnD20 = document.querySelector('#d20-button');
   btnD20.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "D20 ROLL: [" + (Math.floor(Math.random() * 20) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d20 ROLL: [" + (Math.floor(Math.random() * 20) + 1) + "]\n";
   })
   
   const btnD100 = document.querySelector('#d100-button');
   btnD100.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "D100 ROLL: [" + (Math.floor(Math.random() * 100) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d100 ROLL: [" + (Math.floor(Math.random() * 100) + 1) + "]\n";
   })
   
   // function fateDiceFormat(roll) gets 1 and return "+1", get -1 and return "-1"
@@ -373,38 +373,38 @@
   
   const btnCharacter = document.querySelector('#character-button');
   btnCharacter.addEventListener('click', () => {
-    const selCharacter = document.querySelector('#character-tables')
-    txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(tablesNPCS,Number(selCharacter.value)) + ", " + rollOnTable(tablesNPCS,Number(selCharacter.value)) + "\n";
+    const selCharacter = document.querySelector('#character-tables');
+    txtaResults.value = txtaResults.value + tablesCharacters[Number(selCharacter.value)][0].toUpperCase() + ": " + rollOnTable(tablesCharacters,Number(selCharacter.value)) + ", " + rollOnTable(tablesCharacters,Number(selCharacter.value)) + "\n";
   })
   
   const btnLocation = document.querySelector('#location-button');
   btnLocation.addEventListener('click', () => {
-    const selLocation = document.querySelector('#location-tables')
-    txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(tablesLocations,Number(selLocation.value)) + ", " + rollOnTable(tablesLocations,Number(selLocation.value)) + "\n";
+    const selLocation = document.querySelector('#location-tables');
+    txtaResults.value = txtaResults.value + tablesLocations[Number(selLocation.value)][0].toUpperCase() + ": " + rollOnTable(tablesLocations,Number(selLocation.value)) + ", " + rollOnTable(tablesLocations,Number(selLocation.value)) + "\n";
   })
   
   const btnObject = document.querySelector('#object-button');
   btnObject.addEventListener('click', () => {
-    const selObject = document.querySelector('#object-tables')
-    txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(tablesObjects,Number(selObject.value)) + ", " + rollOnTable(tablesObjects,Number(selObject.value)) + "\n";
+    const selObject = document.querySelector('#object-tables');
+    txtaResults.value = txtaResults.value + tablesObjects[Number(selObject.value)][0].toUpperCase() + ": " + rollOnTable(tablesObjects,Number(selObject.value)) + ", " + rollOnTable(tablesObjects,Number(selObject.value)) + "\n";
   })
   
   const btnAdventure = document.querySelector('#adventure-button');
   btnAdventure.addEventListener('click', () => {
-    const selAdventure = document.querySelector('#adventure-tables')
-    txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(tablesAdventure,Number(selAdventure.value)) + ", " + rollOnTable(tablesAdventure,Number(selAdventure.value)) + "\n";
+    const selAdventure = document.querySelector('#adventure-tables');
+    txtaResults.value = txtaResults.value + tablesAdventure[Number(selAdventure.value)][0].toUpperCase() + ": " + rollOnTable(tablesAdventure,Number(selAdventure.value)) + ", " + rollOnTable(tablesAdventure,Number(selAdventure.value)) + "\n";
   })
   
   const btnEncounters = document.querySelector('#encounters-button');
   btnEncounters.addEventListener('click', () => {
-    const selEncounters = document.querySelector('#encounters-tables')
-    txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(tablesEncounters,Number(selEncounters.value)) + ", " + rollOnTable(tablesEncounters,Number(selEncounters.value)) + "\n";
+    const selEncounters = document.querySelector('#encounters-tables');
+    txtaResults.value = txtaResults.value + tablesEncounters[Number(selEncounters.value)][0].toUpperCase() + ": " + rollOnTable(tablesEncounters,Number(selEncounters.value)) + ", " + rollOnTable(tablesEncounters,Number(selEncounters.value)) + "\n";
   })
   
   const btnOther = document.querySelector('#other-button');
   btnOther.addEventListener('click', () => {
-    const selOther = document.querySelector('#other-tables')
-    txtaResults.value = txtaResults.value + "ELEMENTS: " + rollOnTable(tablesOther,Number(selOther.value)) + ", " + rollOnTable(tablesOther,Number(selOther.value)) + "\n";
+    const selOther = document.querySelector('#other-tables');
+    txtaResults.value = txtaResults.value + tablesOther[Number(selOther.value)][0].toUpperCase() + ": " + rollOnTable(tablesOther,Number(selOther.value)) + ", " + rollOnTable(tablesOther,Number(selOther.value)) + "\n";
   })
   
   
@@ -427,8 +427,7 @@
       element.appendChild(optionItem);
     });
   }
-  
-  
+    
   function rollOnTable(tableCategoryArray, tableNumber){
     console.log(`tableNumber: ${tableNumber}`);
     if (isNaN(tableNumber)) return "";
@@ -521,12 +520,20 @@
   ["Published Adventure Theme","Adventure Feature","Adventure Feature","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Npc Action","Pc Negative","Pc Negative","Pc Negative","Pc Positive","Pc Positive","Npc Negative","Npc Negative","Npc Positive","Npc Positive"],
   ["Backstory Theme","New NPC","New NPC","NPC action, or new NPC","NPC negative, or new NPC","NPC positive, or new NPC","New thread ","Close a thread, or new thread","Close a thread, or new thread","Subject negative","Subject positive","Connection, NPC to NPC","Connection, NPC to subject","Complete, or new thread","Complete, or new thread"]
   ];
-  const tablesNPCS = [
-  ["Char. General Descr.","Abnormal","Active","Adventurous","Aggressive","Agreeable","Ally","Ancient","Angry","Anxious","Armed","Aromatic","Arrogant","Attractive","Awkward","Beautiful","Bizarre","Bleak","Bold","Brave","Busy","Calm","Capable","Careful","Careless","Caring","Cautious","Cheerful","Classy","Clean","Clumsy","Colorful","Combative","Commanding","Common","Competitive","Confident","Crazy","Curious","Dangerous","Different","Difficult","Dirty","Disciplined","Educated","Elegant","Erratic","Exotic","Fancy","Fast","Foul","Frightened","Gentle","Harmful","Helpful","Heroic","Humorous","Hurt","Ignorant","Impulsive","Inept","Informative","Intelligent","Interesting","Intimidating","Intrusive","Large","Loud","Meek","Naive","Old","Passive","Polite","Poor","Powerful","Powerless","Primitive","Principled","Quiet","Respectful","Rough","Rude","Simple","Skilled","Slow","Small","Sneaky","Sophisticated","Strange","Strong","Supportive","Surprising","Sweet","Trained","Ugly","Uniformed","Unusual","Weak","Wealthy","Wild","Young"],
-  ["Char. Identity","Abandoned","Administrator","Adventurous","Adversary","Advisor","Ally","Art","Artist","Assistant","Athlete","Bureaucrat","Business","Combatant","Competitor","Controller","Crafter","Creator","Criminal","Deceiver","Deliverer","Dependent","Driver/Pilot","Elite","Enemy","Enforcement","Enforcer","Engineer","Entertainer","Executive","Exotic","Expert","Explorer","Family","Farmer","Fighter","Fixer","Foreigner","Friend","Gambler","Gatherer","Guard","Guardian","Healer","Helpless","Hero","Hunter","Information","Innocent","Inspector","Intellectual","Investigator","Judge","Killer","Laborer","Lackey","Law","Leader","Legal","Mechanical","Mediator","Merchant","Messenger","Military","Mundane","Mystery","Official","Organizer","Outsider","Performer","Persecutor","Planner","Pleaser","Power","Professional","Protector","Public","Punish","Radical","Religious","Representative","Rogue","Ruler","Scholar","Scientist","Scout","Servant","Socialite","Soldier","Student","Subverter","Supporter","Survivor","Teacher","Thief","Thug","Trader","Victim","Villain","Wanderer","Warrior"],
-  ["Char. Personality","Active","Adventurous","Aggressive","Agreeable","Ambitious","Amusing","Angry","Annoying","Anxious","Arrogant","Average","Awkward","Bad","Bitter","Bold","Brave","Calm","Careful","Careless","Classy","Cold","Collector","Committed","Competitive","Confident","Control","Crazy","Creative","Crude","Curious","Deceptive","Determined","Devoted","Dull","Emotion","Empathetic","Exotic","Fair","Fastidious","Follower","Foolish","Friendly","Good","Gourmet","Greed","Haunted","Helpful","Honest","Honor","Humble","Humorous","Inconsistent","Independent","Interesting","Intolerant","Irresponsible","Knowledgable","Larcenous","Leader","Likable","Loyal","Manipulative","Mercurial","Naive","Nervous","Oblivious","Obstinate","Optimistic","Perceptive","Perfectionist","Practical","Prepared","Principled","Protect","Quiet","Quirky","Rash","Rational","Respectful","Responsible","Restless","Risk","Rude","Savvy","Searching","Selfish","Selfless","Shallow","Social","Strange","Strong","Studious","Superstitious","Tolerant","Vindictive","Vocal","Wary","Weak","Wild","Wise"],
-  ["Char. Conversation","Abuse","Advice","Aggressive","Agree","Amusing","Angry","Anxious","Assist","Awkward","Betray","Bizarre","Bleak","Bold","Business","Calm","Careful","Careless","Cautious","Cheerful","Classy","Cold","Colorful","Combative","Crazy","Creepy","Curious","Defiant","Delightful","Disagreeable","Dispute","Efficient","Energetic","Enthusiastic","Excited","Fearful","Fierce","Foolish","Frantic","Frightening","Generous","Gentle","Glad","Grateful","Haggle","Happy","Harsh","Hasty","Helpful","Helpless","Hopeless","Ideas","Inform","Innocent","Inquire","Intense","Interesting","Intolerance","Irritating","Joyful","Judgmental","Juvenile","Kind","Leadership","Lie","Loud","Loving","Loyal","Macabre","Mature","Meaningful","Miserable","Mistrust","Mocking","Mundane","Mysterious","News","Nice","Normal","Odd","Offensive","Official","Oppose","Peace","Plans","Playful","Polite","Positive","Praise","Quarrelsome","Quiet","Reassuring","Refuse","Rude","Rumor","Simple","Threatening","Truce","Trust","Warm","Wild"],
-  ["Char. Motivation","Adventure","Adversity","Ambition","Anger","Approval","Art","Attain","Business","Change","Character","Conflict","Control","Create","Danger","Death","Deceive","Destroy","Diminish","Disrupt","Emotion","Enemy","Environment","Escape","Exotic","Failure","Fame","Family","Fear","Fight","Find","Free","Friend","Goal","Gratify","Group","Guide","Guilt","Hate","Heal","Help","Hide","Home","Hope","Idea","Illness","Important","Imprison","Increase","Information","Innocent","Intellect","Intolerance","Investment","Jealousy","Joy","Justice","Leader","Legal","Loss","Love","Loyalty","Malice","Misfortune","Mistrust","Mundane","Mysterious","Nature","Object","Obligation","Official","Oppose","Pain","Passion","Path","Peace","Physical","Place","Plan","Pleasure","Power","Pride","Protect","Pursue","Rare","Recover","Reveal","Revenge","Riches","Search","Serve","Start","Stop","Strange","Struggle","Success","Suffering","Support","Take","Transform","Travel"],
+
+
+// =================================================================
+// ========== ADD YOUR CUSTOM ORACLES TO THESE ARRAYS ==============
+// =================================================================
+// ===== FORMAT: ["Oracle Title","Result 1","Result 2", ... ] ======
+// =================================================================
+
+const tablesCharacters = [
+  ["Npc General Descr.","Abnormal","Active","Adventurous","Aggressive","Agreeable","Ally","Ancient","Angry","Anxious","Armed","Aromatic","Arrogant","Attractive","Awkward","Beautiful","Bizarre","Bleak","Bold","Brave","Busy","Calm","Capable","Careful","Careless","Caring","Cautious","Cheerful","Classy","Clean","Clumsy","Colorful","Combative","Commanding","Common","Competitive","Confident","Crazy","Curious","Dangerous","Different","Difficult","Dirty","Disciplined","Educated","Elegant","Erratic","Exotic","Fancy","Fast","Foul","Frightened","Gentle","Harmful","Helpful","Heroic","Humorous","Hurt","Ignorant","Impulsive","Inept","Informative","Intelligent","Interesting","Intimidating","Intrusive","Large","Loud","Meek","Naive","Old","Passive","Polite","Poor","Powerful","Powerless","Primitive","Principled","Quiet","Respectful","Rough","Rude","Simple","Skilled","Slow","Small","Sneaky","Sophisticated","Strange","Strong","Supportive","Surprising","Sweet","Trained","Ugly","Uniformed","Unusual","Weak","Wealthy","Wild","Young"],
+  ["Npc Identity","Abandoned","Administrator","Adventurous","Adversary","Advisor","Ally","Art","Artist","Assistant","Athlete","Bureaucrat","Business","Combatant","Competitor","Controller","Crafter","Creator","Criminal","Deceiver","Deliverer","Dependent","Driver/Pilot","Elite","Enemy","Enforcement","Enforcer","Engineer","Entertainer","Executive","Exotic","Expert","Explorer","Family","Farmer","Fighter","Fixer","Foreigner","Friend","Gambler","Gatherer","Guard","Guardian","Healer","Helpless","Hero","Hunter","Information","Innocent","Inspector","Intellectual","Investigator","Judge","Killer","Laborer","Lackey","Law","Leader","Legal","Mechanical","Mediator","Merchant","Messenger","Military","Mundane","Mystery","Official","Organizer","Outsider","Performer","Persecutor","Planner","Pleaser","Power","Professional","Protector","Public","Punish","Radical","Religious","Representative","Rogue","Ruler","Scholar","Scientist","Scout","Servant","Socialite","Soldier","Student","Subverter","Supporter","Survivor","Teacher","Thief","Thug","Trader","Victim","Villain","Wanderer","Warrior"],
+  ["Npc Personality","Active","Adventurous","Aggressive","Agreeable","Ambitious","Amusing","Angry","Annoying","Anxious","Arrogant","Average","Awkward","Bad","Bitter","Bold","Brave","Calm","Careful","Careless","Classy","Cold","Collector","Committed","Competitive","Confident","Control","Crazy","Creative","Crude","Curious","Deceptive","Determined","Devoted","Dull","Emotion","Empathetic","Exotic","Fair","Fastidious","Follower","Foolish","Friendly","Good","Gourmet","Greed","Haunted","Helpful","Honest","Honor","Humble","Humorous","Inconsistent","Independent","Interesting","Intolerant","Irresponsible","Knowledgable","Larcenous","Leader","Likable","Loyal","Manipulative","Mercurial","Naive","Nervous","Oblivious","Obstinate","Optimistic","Perceptive","Perfectionist","Practical","Prepared","Principled","Protect","Quiet","Quirky","Rash","Rational","Respectful","Responsible","Restless","Risk","Rude","Savvy","Searching","Selfish","Selfless","Shallow","Social","Strange","Strong","Studious","Superstitious","Tolerant","Vindictive","Vocal","Wary","Weak","Wild","Wise"],
+  ["Npc Conversation","Abuse","Advice","Aggressive","Agree","Amusing","Angry","Anxious","Assist","Awkward","Betray","Bizarre","Bleak","Bold","Business","Calm","Careful","Careless","Cautious","Cheerful","Classy","Cold","Colorful","Combative","Crazy","Creepy","Curious","Defiant","Delightful","Disagreeable","Dispute","Efficient","Energetic","Enthusiastic","Excited","Fearful","Fierce","Foolish","Frantic","Frightening","Generous","Gentle","Glad","Grateful","Haggle","Happy","Harsh","Hasty","Helpful","Helpless","Hopeless","Ideas","Inform","Innocent","Inquire","Intense","Interesting","Intolerance","Irritating","Joyful","Judgmental","Juvenile","Kind","Leadership","Lie","Loud","Loving","Loyal","Macabre","Mature","Meaningful","Miserable","Mistrust","Mocking","Mundane","Mysterious","News","Nice","Normal","Odd","Offensive","Official","Oppose","Peace","Plans","Playful","Polite","Positive","Praise","Quarrelsome","Quiet","Reassuring","Refuse","Rude","Rumor","Simple","Threatening","Truce","Trust","Warm","Wild"],
+  ["Npc Motivation","Adventure","Adversity","Ambition","Anger","Approval","Art","Attain","Business","Change","Character","Conflict","Control","Create","Danger","Death","Deceive","Destroy","Diminish","Disrupt","Emotion","Enemy","Environment","Escape","Exotic","Failure","Fame","Family","Fear","Fight","Find","Free","Friend","Goal","Gratify","Group","Guide","Guilt","Hate","Heal","Help","Hide","Home","Hope","Idea","Illness","Important","Imprison","Increase","Information","Innocent","Intellect","Intolerance","Investment","Jealousy","Joy","Justice","Leader","Legal","Loss","Love","Loyalty","Malice","Misfortune","Mistrust","Mundane","Mysterious","Nature","Object","Obligation","Official","Oppose","Pain","Passion","Path","Peace","Physical","Place","Plan","Pleasure","Power","Pride","Protect","Pursue","Rare","Recover","Reveal","Revenge","Riches","Search","Serve","Start","Stop","Strange","Struggle","Success","Suffering","Support","Take","Transform","Travel"],
   ["Creature Abilities","Ambush","Animate","Armor","Arrive","Attach","Attack","Attract","Bite","Block","Blunt","Break","Breath","Carry","Change","Climb","Cold","Common","Communicate","Conceal","Contact","Control","Create","Damage","Dark","Death","Deceive","Decrease","Defense","Depower","Detect","Disrupt","Distract","Dominate","Drain","Element","Energy","Enhanced","Entangle","Environment","Exotic","Extra","Fear","Fight","Fire","Flight","Harm","Heal","Illness","Illusion","Imitate","Immune","Imprison","Increase","Intelligent","Itself","Kill","Lethal","Light","Limited","Magic","Mind","Move","Multiple","Natural","Normal","Open","Others","Paralyze","Physical","Pierce","Poison","Proximity","Pursue","Ranged","Rechargeable","Resistance","Self-Sufficient","Senses","Skill","Sleep","Speed","Spy","Stop","Stun","Substance","Summon","Suppress","Swim","Take","Telepathy","Touch","Transform","Transformation","Travel","Trick","Uncommon","Vision","Vulnerable","Weak","Weapon"],
   ];
   const tablesAdventure = [
@@ -541,11 +548,12 @@
   ["General Item Descr.","Active","Amusing","Ancient","Aromatic","Artistic","Average","Beautiful","Bizarre","Bright","Broken","Classy","Clothing","Cold","Colorful","Communication","Confusing","Creepy","Cute","Damaged","Dangerous","Deliberate","Delicate","Delightful","Desired","Disgusting","Domestic","Empty","Energy","Enormous","Exotic","Expected","Extravagant","Faded","Familiar","Fancy","Flora","Food","Fortunate","Fragile","Frightening","Fuel","Garbage","Hard","Harmful","Healing","Heavy","Helpful","Hidden","Horrible","Important","Inactive","Intriguing","Large","Lethal","Light","Liquid","Loud","Magnificent","Majestic","Meaningful","Mechanical","Military","Modern","Moving","Multiple","Mundane","Mysterious","Natural","Negative","New","Odd","Official","Old","Ornate","Personal","Positive","Powerful","Primitive","Prized","Rare","Reassuring","Resource","Ruined","Single","Small","Smelly","Smooth","Soft","Strange","Threatening","Tool","Travel","Unexpected","Unusual","Useful","Useless","Valuable","Warm","Watery","Weapon"],
   ];
   const tablesEncounters = [
-  ["General Encounters","Abnormal","Aggressive","Angry","Anxious","Beautiful","Average","Bold","Busy","Calm","Careless","Cautious","Cheerful","Combative","Bizarre","Crazy","Curious","Dangerous","Defiant","Classy","Delightful","Creepy","Energetic","Enormous","Excited","Fearful","Ferocious","Foolish","Fortunate","Frantic","Frightening","Cute","Generous","Gentle","Glad","Graceful","Happy","Helpful","Helpless","Innocent","Intense","Lazy","Defeated","Loud","Loyal","Majestic","Disgusting","Enormous","Miserable","Mysterious","Feeble","Odd","Official","Peaceful","Playful","Positive","Powerful","Exotic","Familiar","Slow","Horrible","Swift","Threatening","Violent","Wild","Important","Lonely","Mighty","Military","Mundane","Powerful","Reassuring","Small","Smelly","Strong","Watery","Weak","Ambush","Harmful","Trap","Friend","Foe","Negative","Evil","Animal","Expected","Unexpected","Strange","Armed","Active","Inactive","Multiple","Single","Primitive","Unusual","Fast","Hidden","Natural","Quiet","Unnatural","Resourceful"]
+  ["General Encounters","Abnormal","Aggressive","Angry","Anxious","Beautiful","Average","Bold","Busy","Calm","Careless","Cautious","Cheerful","Combative","Bizarre","Crazy","Curious","Dangerous","Defiant","Classy","Delightful","Creepy","Energetic","Enormous","Excited","Fearful","Ferocious","Foolish","Fortunate","Frantic","Frightening","Cute","Generous","Gentle","Glad","Graceful","Happy","Helpful","Helpless","Innocent","Intense","Lazy","Defeated","Loud","Loyal","Majestic","Disgusting","Enormous","Miserable","Mysterious","Feeble","Odd","Official","Peaceful","Playful","Positive","Powerful","Exotic","Familiar","Slow","Horrible","Swift","Threatening","Violent","Wild","Important","Lonely","Mighty","Military","Mundane","Powerful","Reassuring","Small","Smelly","Strong","Watery","Weak","Ambush","Harmful","Trap","Friend","Foe","Negative","Evil","Animal","Expected","Unexpected","Strange","Armed","Active","Inactive","Multiple","Single","Primitive","Unusual","Fast","Hidden","Natural","Quiet","Unnatural","Resourceful"],
   ];
   const tablesOther = [
   ["Sounds Descr.","Activity","Agree","Anger","Animals","Approach","Assist","Attention","Attract","Battle","Befriend","Beseeching","Bizarre","Busy","Calm","Carelessness","Ceaseless","Celebrate","Cheerful","Combative","Communicate","Crazy","Creaking","Creepy","Cries","Danger","Defiant","Disagreeable","Dispute","Distant","Emotions","Energetic","Exotic","Explosion","Familiar","Feminine","Ferocious","Fierce","Fight","Footsteps","Frantic","Frightening","Growl","Help","Helpful","Imitate","Important","Indistinct","Industry","Information","Innocent","Inquire","Intense","Interesting","Irritating","Juvenile","Kindly","Lies","Loud","Machinery","Masculine","Masses","Meaningful","Messages","Metallic","Mysterious","Natural","Near","Normal","Odd","Praise","Propose","Pursue","Quietly","Reassuring","Remarkable","Roar","Rumbling","Scary","Scraping","Shouts","Simple","Slowly","Softly","Starting","Stopping","Strange","Strong","Struggle","Suffering","Tapping","Technology","Threatening","Tranquil","Truce","Voices","Warlike","Warning","Water","Weather","Wild"],
   ];
+
   </script>
 </body>
 </html>
