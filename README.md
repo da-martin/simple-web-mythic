@@ -16,3 +16,6 @@ Oh, and by the way GitHub Copilot suggested some oracles/tables which I included
 
 I've also decided to make it so that you yourself can add other tables or oracles easily to your copy of this tool if you have the slightliest coding knowledge (or maybe even if you have none). The tool is designed to load automatically any tables in the proper place and the proper format to the corresponding category's Select boxes. Just edit the HTML file, go to the bottom, and you'll see some instructions there.
 
+## Installation
+
+[Go to the tool](https://da-martin.github.io/simple-web-mythic/), scroll down and follow the instructions at the very bottom.
