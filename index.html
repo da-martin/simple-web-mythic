@@ -31,7 +31,7 @@
       margin-left: 16px;
       margin-block-start: 0.3em;
       margin-block-end: 0.3em;
-      
+      font-size: 1.6em;;
     }
     
     p {
@@ -143,11 +143,11 @@
 
 <!-- HTML HERE ---------------------------------------------------->
 <body>
-  <h1>Mythic Simple Web</h1>
+  <h1>Mythic Simple Web v0.3</h1>
   <div id="container">
     <div id="main" class="frames">
       <div class="oracle-rows">
-        <label for "chaosfactor-select">Chaos Factor</label>
+        <label for "chaosfactor-select">Chaos Factor:</label>
         <select id="chaosfactor-select">
           <option value="6">6</option>
           <option value="5">5</option>
@@ -196,7 +196,7 @@
         <button type="button" id="d100-button">100</button>
         <button type="button" id="dF-button">F</button>        
       </div>
-      <hr>
+            <hr>
       <div class="oracle-rows">
         <select id="character-tables" class="oracle-select"></select>
         <button type="button" class="oracle-button" id="character-button">Character Tables</button>
@@ -220,6 +220,36 @@
       <div class="oracle-rows">
         <select id="other-tables" class="oracle-select"></select>
         <button type="button" class="oracle-button" id="other-button">Other Tables</button>
+      </div>
+      <hr>
+      <div class="oracle-rows">
+        <select id="active-rank">
+          <option value="6">Superhuman</option>
+          <option value="5">Awesome</option>
+          <option value="4">Incredible</option>
+          <option value="3">Exceptional</option>
+          <option value="2">High</option>
+          <option value="1">Above Avg.</option>
+          <option value="0" selected>Average</option>
+          <option value="-1">Below Avg.</option>
+          <option value="-2">Low</option>
+          <option value="-3">Weak</option>
+          <option value="-4">Miniscule</option>
+        </select>
+        🏹<button type="button" id="skill-check">VS</button>🎯
+        <select id="opposing-rank">
+          <option value="6">Superhuman</option>
+          <option value="5">Awesome</option>
+          <option value="4">Incredible</option>
+          <option value="3">Exceptional</option>
+          <option value="2">High</option>
+          <option value="1">Above Avg.</option>
+          <option value="0" selected>Average</option>
+          <option value="-1">Below Avg.</option>
+          <option value="-2">Low</option>
+          <option value="-3">Weak</option>
+          <option value="-4">Miniscule</option>
+        </select>
       </div>
     </div>
 
@@ -316,49 +346,38 @@
   
   const btnD4 = document.querySelector('#d4-button');
   btnD4.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "d4 ROLL: [" + (Math.floor(Math.random() * 4) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d4: [" + (Math.floor(Math.random() * 4) + 1) + "]\n";
   })
   
   const btnD6 = document.querySelector('#d6-button');
   btnD6.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "d6 ROLL: [" + (Math.floor(Math.random() * 6) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d6: [" + (Math.floor(Math.random() * 6) + 1) + "]\n";
   })
   
   const btnD8 = document.querySelector('#d8-button');
   btnD8.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "d8 ROLL: [" + (Math.floor(Math.random() * 8) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d8: [" + (Math.floor(Math.random() * 8) + 1) + "]\n";
   })
   
   const btnD10 = document.querySelector('#d10-button');
   btnD10.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "d10 ROLL: [" + (Math.floor(Math.random() * 10) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d10: [" + (Math.floor(Math.random() * 10) + 1) + "]\n";
   })
   
   const btnD12 = document.querySelector('#d12-button');
   btnD12.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "d12 ROLL: [" + (Math.floor(Math.random() * 12) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d12: [" + (Math.floor(Math.random() * 12) + 1) + "]\n";
   })
   
   const btnD20 = document.querySelector('#d20-button');
   btnD20.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "d20 ROLL: [" + (Math.floor(Math.random() * 20) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d20: [" + (Math.floor(Math.random() * 20) + 1) + "]\n";
   })
   
   const btnD100 = document.querySelector('#d100-button');
   btnD100.addEventListener('click', () => {
-      txtaResults.value = txtaResults.value + "d100 ROLL: [" + (Math.floor(Math.random() * 100) + 1) + "]\n";
+      txtaResults.value = txtaResults.value + "d100: [" + (Math.floor(Math.random() * 100) + 1) + "]\n";
   })
-  
-  // function fateDiceFormat(roll) gets 1 and return "+1", get -1 and return "-1"
-  function fateDiceFormat(roll) {
-    if (roll > 0) {
-      return "[+]";
-    } else if (roll < 0) {
-      return "[-]";
-    } else {
-      return "[  ]";
-    }
-  }
   
   const btnDF = document.querySelector('#dF-button');
   btnDF.addEventListener('click', () => {
@@ -367,47 +386,64 @@
     const d3 = (Math.floor(Math.random() * 3) - 1);
     const d4 = (Math.floor(Math.random() * 3) - 1);
     const dF = d1 + d2 + d3 + d4;
-    const dFRolls = `dF ROLL: ${fateDiceFormat(d1)} ${fateDiceFormat(d2)} ${fateDiceFormat(d3)} ${fateDiceFormat(d4)} = [${dF}]`;
+    const dFRolls = `dF: [[${dF}]] <<< ${fateDiceFormat(d1)} ${fateDiceFormat(d2)} ${fateDiceFormat(d3)} ${fateDiceFormat(d4)}`;
     txtaResults.value = txtaResults.value + dFRolls + "\n";
   })
+  
+  // function fateDiceFormat(roll) gets 1 and return "+1", get -1 and return "-1"
+  function fateDiceFormat(roll) {
+  if (roll > 0) {
+      return "[+]";
+    } else if (roll < 0) {
+      return "[-]";
+    } else {
+      return "[_]";
+    }
+  }
   
   const btnCharacter = document.querySelector('#character-button');
   btnCharacter.addEventListener('click', () => {
     const selCharacter = document.querySelector('#character-tables');
-    txtaResults.value = txtaResults.value + tablesCharacters[Number(selCharacter.value)][0].toUpperCase() + ": " + rollOnTable(tablesCharacters,Number(selCharacter.value)) + ", " + rollOnTable(tablesCharacters,Number(selCharacter.value)) + "\n";
+    if (tablesCharacters[selCharacter.value].length > 1)
+      txtaResults.value = txtaResults.value + tablesCharacters[selCharacter.value][0].toUpperCase() + ": " + rollOnTable(tablesCharacters,Number(selCharacter.value)) + ", " + rollOnTable(tablesCharacters,Number(selCharacter.value)) + "\n";
   })
   
   const btnLocation = document.querySelector('#location-button');
   btnLocation.addEventListener('click', () => {
     const selLocation = document.querySelector('#location-tables');
-    txtaResults.value = txtaResults.value + tablesLocations[Number(selLocation.value)][0].toUpperCase() + ": " + rollOnTable(tablesLocations,Number(selLocation.value)) + ", " + rollOnTable(tablesLocations,Number(selLocation.value)) + "\n";
+    if (tablesLocations[selLocation.value].length > 1)
+      txtaResults.value = txtaResults.value + tablesLocations[selLocation.value][0].toUpperCase() + ": " + rollOnTable(tablesLocations,Number(selLocation.value)) + ", " + rollOnTable(tablesLocations,Number(selLocation.value)) + "\n";
   })
   
   const btnObject = document.querySelector('#object-button');
   btnObject.addEventListener('click', () => {
     const selObject = document.querySelector('#object-tables');
-    txtaResults.value = txtaResults.value + tablesObjects[Number(selObject.value)][0].toUpperCase() + ": " + rollOnTable(tablesObjects,Number(selObject.value)) + ", " + rollOnTable(tablesObjects,Number(selObject.value)) + "\n";
+    if (tablesObjects[selObject.value].length > 1)
+      txtaResults.value = txtaResults.value + tablesObjects[selObject.value][0].toUpperCase() + ": " + rollOnTable(tablesObjects,Number(selObject.value)) + ", " + rollOnTable(tablesObjects,Number(selObject.value)) + "\n";
   })
   
   const btnAdventure = document.querySelector('#adventure-button');
   btnAdventure.addEventListener('click', () => {
     const selAdventure = document.querySelector('#adventure-tables');
-    txtaResults.value = txtaResults.value + tablesAdventure[Number(selAdventure.value)][0].toUpperCase() + ": " + rollOnTable(tablesAdventure,Number(selAdventure.value)) + ", " + rollOnTable(tablesAdventure,Number(selAdventure.value)) + "\n";
+    if (tablesAdventures[selAdventure.value].length > 1)
+      txtaResults.value = txtaResults.value + tablesAdventures[selAdventure.value][0].toUpperCase() + ": " + rollOnTable(tablesAdventures,Number(selAdventure.value)) + ", " + rollOnTable(tablesAdventures,Number(selAdventure.value)) + "\n";
   })
   
   const btnEncounters = document.querySelector('#encounters-button');
   btnEncounters.addEventListener('click', () => {
     const selEncounters = document.querySelector('#encounters-tables');
-    txtaResults.value = txtaResults.value + tablesEncounters[Number(selEncounters.value)][0].toUpperCase() + ": " + rollOnTable(tablesEncounters,Number(selEncounters.value)) + ", " + rollOnTable(tablesEncounters,Number(selEncounters.value)) + "\n";
+    if (tablesEncounters[selEncounters.value].length > 1)
+      txtaResults.value = txtaResults.value + tablesEncounters[selEncounters.value][0].toUpperCase() + ": " + rollOnTable(tablesEncounters,Number(selEncounters.value)) + ", " + rollOnTable(tablesEncounters,Number(selEncounters.value)) + "\n";
   })
   
   const btnOther = document.querySelector('#other-button');
   btnOther.addEventListener('click', () => {
     const selOther = document.querySelector('#other-tables');
-    txtaResults.value = txtaResults.value + tablesOther[Number(selOther.value)][0].toUpperCase() + ": " + rollOnTable(tablesOther,Number(selOther.value)) + ", " + rollOnTable(tablesOther,Number(selOther.value)) + "\n";
+    if (tablesOther[selOther.value].length > 1)
+      txtaResults.value = txtaResults.value + tablesOther[selOther.value][0].toUpperCase() + ": " + rollOnTable(tablesOther,Number(selOther.value)) + ", " + rollOnTable(tablesOther,Number(selOther.value)) + "\n";
   })
   
-  
+
   function loadSelect(element,tableCategory,arrayTablesIDs) {
     console.log(element);
     console.log(arrayTablesIDs);
@@ -454,7 +490,8 @@
     if ((likelyhood == "Favorable" && gChaosFactor < 4) || (likelyhood == "Unfavorable" && gChaosFactor > 6)) modifier = 2;
       else if ((likelyhood == "Unfavorable" && chaosFactor < 4) || (likelyhood == "Favorable" && chaosFactor > 6)) modifier = -2;
     console.log(`D1:${d1} D2:${d2} D3:${d3} Mod:${modifier} Likely:${likelyhood}`);
-    ((d1 + d2 + modifier + Number(likelyhood)) > 10) ? result = "Yes" : result = "No";
+    const rollResult = (d1 + d2 + modifier + Number(likelyhood));
+    (rollResult > 10) ? result = `Yes [${rollResult}]` : result = `No [${rollResult}]`;
     if (d3<=chaosFactor) {
       if (d1 == d2) {
         result = "Exceptional " + result + " and random event\n";
@@ -490,8 +527,43 @@
     else return rollOnTable(tablesMythic,HIGHCFDETAIL);
   }
   
-  // TABLES DOWN HERE
+  const btnSkillCheck = document.querySelector('#skill-check');
+  btnSkillCheck.addEventListener('click', () => {
+    const selActiveRank = document.querySelector('#active-rank');
+    const selOpposingRank = document.querySelector('#opposing-rank');
+    const selectedActiveRankText = selActiveRank.options[selActiveRank.selectedIndex].text;
+    const selectedOpposingRankText = selOpposingRank.options[selOpposingRank.selectedIndex].text;
+    txtaResults.value = txtaResults.value + selectedActiveRankText.toUpperCase() + " VS " + selectedOpposingRankText.toUpperCase() + ": " 
+      + skillCheck(selActiveRank.value,selOpposingRank.value,gChaosFactor,selTheme.value) + "\n";
+  }
+  )
   
+function skillCheck(activeRank,opposingRank,chaosFactor,theme) {
+    let d1 = Math.floor(Math.random() * 10) + 1;
+    let d2 = Math.floor(Math.random() * 10) + 1;
+    let d3 = Math.floor(Math.random() * 10) + 1;
+    console.log(`Dados Skill Check: ${d1} ${d2}, ${d3}`);
+    let result = "";
+    const modifier = activeRank - opposingRank;
+    const rollResult = (d1 + d2 + modifier);
+    ( rollResult > 10) ? result = `Success [${rollResult}]` : result = `Failure [${rollResult}]`;
+    if (d3<=chaosFactor) {
+      if (d1 == d2) {
+        result = "Exceptional " + result + " and random event\n";
+      }
+      else if (d1 % 2 == 0 && d2 % 2 == 0) {
+        result = result + " and random event\n";
+      }
+      else if (d1 % 2 !== 0 && d2 % 2 !== 0) {
+        result = "Exceptional " + result;
+        return result;
+      }
+      else return result;
+      result = result + randomEvent(theme);
+    }
+    return result;
+  }
+    
   const LOWCFDETAIL = 0; 
   const MEDCFDETAIL = 1;
   const HIGHCFDETAIL = 2; 
