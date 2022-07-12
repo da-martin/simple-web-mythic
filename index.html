@@ -143,11 +143,11 @@
 
 <!-- HTML HERE ---------------------------------------------------->
 <body>
-  <h1>Mythic Simple Web v0.3</h1>
+  <h1>Mythic Simple Web v0.3.1</h1>
   <div id="container">
     <div id="main" class="frames">
       <div class="oracle-rows">
-        <label for "chaosfactor-select">Chaos Factor:</label>
+        <label for "chaosfactor-select">Chaos:</label>
         <select id="chaosfactor-select">
           <option value="6">6</option>
           <option value="5">5</option>
@@ -155,6 +155,7 @@
           <option value="3">3</option>
         </select>
         <button type="button" class="gme-button" id="scene-button">Scene Setup</button>
+        <button type="button" class="gme-button" id="random-button">Rnd Event</button>
       </div>
       <div class="oracle-rows">
         <button type="button" class="gme-button" id="fate-button">Fate Check</button>
@@ -491,7 +492,7 @@
       else if ((likelyhood == "Unfavorable" && chaosFactor < 4) || (likelyhood == "Favorable" && chaosFactor > 6)) modifier = -2;
     console.log(`D1:${d1} D2:${d2} D3:${d3} Mod:${modifier} Likely:${likelyhood}`);
     const rollResult = (d1 + d2 + modifier + Number(likelyhood));
-    (rollResult > 10) ? result = `Yes [${rollResult}]` : result = `No [${rollResult}]`;
+    (rollResult > 10) ? result = `Yes (${rollResult})` : result = `No (${rollResult})`;
     if (d3<=chaosFactor) {
       if (d1 == d2) {
         result = "Exceptional " + result + " and random event\n";
@@ -541,26 +542,26 @@
 function skillCheck(activeRank,opposingRank,chaosFactor,theme) {
     let d1 = Math.floor(Math.random() * 10) + 1;
     let d2 = Math.floor(Math.random() * 10) + 1;
-    let d3 = Math.floor(Math.random() * 10) + 1;
-    console.log(`Dados Skill Check: ${d1} ${d2}, ${d3}`);
-    let result = "";
+    // let d3 = Math.floor(Math.random() * 10) + 1;
+    const roll = d1 + d2;
     const modifier = activeRank - opposingRank;
-    const rollResult = (d1 + d2 + modifier);
-    ( rollResult > 10) ? result = `Success [${rollResult}]` : result = `Failure [${rollResult}]`;
-    if (d3<=chaosFactor) {
-      if (d1 == d2) {
-        result = "Exceptional " + result + " and random event\n";
-      }
-      else if (d1 % 2 == 0 && d2 % 2 == 0) {
-        result = result + " and random event\n";
-      }
-      else if (d1 % 2 !== 0 && d2 % 2 !== 0) {
-        result = "Exceptional " + result;
-        return result;
-      }
-      else return result;
-      result = result + randomEvent(theme);
-    }
+    const rollResult = (roll + modifier);
+    let result = `[${roll}] + ${modifier} = `;
+    ( rollResult > 10) ? result = result + `Success (${rollResult})` : result = result + `Failure (${rollResult})`;
+    // if (d3<=chaosFactor) {
+    //   if (d1 == d2) {
+    //     result = "Exceptional " + result + " and random event\n";
+    //   }
+    //   else if (d1 % 2 == 0 && d2 % 2 == 0) {
+    //     result = result + " and random event\n";
+    //   }
+    //   else if (d1 % 2 !== 0 && d2 % 2 !== 0) {
+    //     result = "Exceptional " + result;
+    //     return result;
+    //   }
+    //   else return result;
+    //   result = result + randomEvent(theme);
+    // }
     return result;
   }
     
@@ -620,19 +621,19 @@ const tablesLocations = [
 ["General Loc. Descr.","Abandoned","Active","Amusing","Ancient","Aromatic","Artistic","Atmosphere","Average","Beautiful","Bizarre","Bleak","Bright","Calm","Classy","Clean","Cluttered","Cold","Colorful","Confusing","Creepy","Cute","Damaged","Dangerous","Dark","Delightful","Dirty","Disgusting","Domestic","Drab","Dry","Echo","Empty","Enclosed","Enormous","Exclusive","Exotic","Expected","Extravagant","Familiar","Fancy","Festive","Fortunate","Frightening","Full","Harmful","Harsh","Helpful","Horrible","Important","Inactive","Intense","Intriguing","Lavish","Lonely","Long","Loud","Magnificent","Majestic","Meaningful","Messy","Military","Modern","Moving","Mundane","Mysterious","Natural","Negative","New","Odd","Official","Open","Ornate","Peaceful","Personal","Positive","Primitive","Protection","Purposeful","Quaint","Quiet","Reassuring","Resourceful","Ruined","Rustic","Safe","Simple","Small","Smelly","Sounds","Spacious","Storage","Strange","Tall","Threatening","Tranquil","Unexpected","Unsteady","Unusual","Warm","Watery"],
 ["Forest Descr.","Abnormal","Activity","Adversity","Aggressive","Ambush","Ancient","Animals","Aromatic","Art","Assist","Average","Beautiful","Bizarre","Bleak","Block","Boulder","Cave","Cliff","Cold","Colorful","Combative","Communicate","Creepy","Damaged","Danger","Dark","Death","Delicate","Dry","Elements","Enormous","Environment","Exotic","Fearful","Feeble","Fierce","Food","Fortunate","Fresh","Harsh","Healthy","Helpful","Important","Information","Intense","Interesting","Lacking","Lake","Large","Lean","Ledge","Lethal","Loud","Macabre","Magnificent","Majestic","Masses","Mature","Messages","Mighty","Mundane","Mysterious","Natural","Nature","Nondescript","Normal","Odd","Old","Path","Peaceful","Plants","Pond","Possessions","Powerful","Pursue","Quiet","Rare","Reassuring","Remarkable","River","Rocks","Rough","Ruined","Scary","Simple","Slope","Small","Sounds","Strong","Threatening","Tranquil","Tree","Valuable","Violent","Warm","Watery","Weak","Weather","Wild","Young"],
 ["Starship Descr.","Abnormal","Activity","Adversity","Assist","Automated","Average","Battle","Beautiful","Bestow","Bizarre","Bleak","Block","Bright","Business","Clean","Cold","Colorful","Combative","Communicate","Computer","Contain","Controls","Creepy","Crew","Damaged","Danger","Dark","Death","Defense","Empty","Energy","Engine","Enormous","Environment","Exit","Exotic","Exterior","Fancy","Fearful","Food","Full","Health","Helpful","Important","Imprison","Inform","Information","Inquire","Interesting","Lacking","Large","Lavish","Leadership","Lethal","Loud","Magnificent","Maintenance","Majestic","Masses","Meaningful","Mechanical","Messages","Messy","Mighty","Military","Modern","Mundane","Mysterious","Natural","Normal","Odd","Portal","Possessions","Power","Powerful","Prison","Quiet","Rare","Reassuring","Remarkable","Room","Rough","Ruined","Scary","Simple","Small","Sounds","Start","Stop","Supplies","Survival","System","Tactics","Technology","Travel","Valuable","Vehicle","Warm","Weapon","Work"],
-["GH COPILOT GENERATED"],
+["- COPILOT GENERATED:"],
 ["GHCopilot Planet","Abnormal","Activity","Adversity","Aggressive","Ambush","Ancient","Animals","Aromatic","Art","Assist","Average","Beautiful","Bizarre","Bleak","Bright","Calm","Classy","Clean","Cluttered","Cold","Colorful","Confusing","Creepy","Cute","Damaged","Dangerous","Dark","Delightful","Dirty","Disgusting","Domestic","Drab","Dry","Echo","Empty","Enclosed","Enormous","Exclusive","Exotic","Expected","Extravagant","Familiar","Fancy","Festive","Fortunate","Frightening","Full","Harmful","Harsh","Helpful","Helpless","Hidden","Horrible","Important","Inactive","Intense","Intriguing","Lavish","Lonely","Long","Loud","Magnificent","Majestic","Masses","Mature","Messages","Mighty","Mundane","Mysterious","Natural","Nature","Nondescript","Normal","Odd","Old","Path","Peaceful","Plants","Pond","Possessions","Powerful","Pursue","Quiet","Rare","Reassuring","Remarkable","River","Rocks","Rough","Ruined","Scary","Simple","Slope","Small","Sounds","Strong","Threatening","Tranquil","Tree","Valuable","Violent","Warm","Watery","Weak","Weather","Wild","Young"],
 ];
 
 const tablesObjects = [
 ["General Item Descr.","Active","Amusing","Ancient","Aromatic","Artistic","Average","Beautiful","Bizarre","Bright","Broken","Classy","Clothing","Cold","Colorful","Communication","Confusing","Creepy","Cute","Damaged","Dangerous","Deliberate","Delicate","Delightful","Desired","Disgusting","Domestic","Empty","Energy","Enormous","Exotic","Expected","Extravagant","Faded","Familiar","Fancy","Flora","Food","Fortunate","Fragile","Frightening","Fuel","Garbage","Hard","Harmful","Healing","Heavy","Helpful","Hidden","Horrible","Important","Inactive","Intriguing","Large","Lethal","Light","Liquid","Loud","Magnificent","Majestic","Meaningful","Mechanical","Military","Modern","Moving","Multiple","Mundane","Mysterious","Natural","Negative","New","Odd","Official","Old","Ornate","Personal","Positive","Powerful","Primitive","Prized","Rare","Reassuring","Resource","Ruined","Single","Small","Smelly","Smooth","Soft","Strange","Threatening","Tool","Travel","Unexpected","Unusual","Useful","Useless","Valuable","Warm","Watery","Weapon"],
-["GH COPILOT GENERATED"],
+["- COPILOT GENERATED:"],
 ["GHCopilot Powerful Item","Animal","Animate","Area","Armor","Assist","Attack","Attract","Benefit","Bestow","Block","Book","Change","Clothing","Cloud","Cold","Colorful","Communication","Confusing","Creepy","Cute","Damaged","Dangerous","Deliberate","Delicate","Delightful","Desired","Disgusting","Domestic","Empty","Energy","Enormous","Exotic","Expected","Extravagant","Faded","Familiar","Fancy","Flora","Food","Fortunate","Fragile","Frightening","Fuel","Garbage","Hard","Harmful","Healing","Heavy","Helpful","Hidden","Horrible","Important","Inactive","Intriguing","Large","Lethal","Light","Liquid","Loud","Magnificent","Majestic","Meaningful","Mechanical","Military","Modern","Moving","Multiple","Mundane","Mysterious","Natural","Negative","New","Odd","Official","Old","Ornate","Personal","Positive","Powerful","Primitive","Prized","Rare","Reassuring","Resource","Ruined","Single","Small","Smelly","Smooth","Soft","Strange","Threatening","Tool","Travel","Unexpected","Unusual","Useful","Useless","Valuable","Warm","Watery","Weapon","Worn","Written"],
 ];
 
 const tablesEncounters = [
 ["General Encounters","Abnormal","Aggressive","Angry","Anxious","Beautiful","Average","Bold","Busy","Calm","Careless","Cautious","Cheerful","Combative","Bizarre","Crazy","Curious","Dangerous","Defiant","Classy","Delightful","Creepy","Energetic","Enormous","Excited","Fearful","Ferocious","Foolish","Fortunate","Frantic","Frightening","Cute","Generous","Gentle","Glad","Graceful","Happy","Helpful","Helpless","Innocent","Intense","Lazy","Defeated","Loud","Loyal","Majestic","Disgusting","Enormous","Miserable","Mysterious","Feeble","Odd","Official","Peaceful","Playful","Positive","Powerful","Exotic","Familiar","Slow","Horrible","Swift","Threatening","Violent","Wild","Important","Lonely","Mighty","Military","Mundane","Powerful","Reassuring","Small","Smelly","Strong","Watery","Weak","Ambush","Harmful","Trap","Friend","Foe","Negative","Evil","Animal","Expected","Unexpected","Strange","Armed","Active","Inactive","Multiple","Single","Primitive","Unusual","Fast","Hidden","Natural","Quiet","Unnatural","Resourceful"],
-["GH COPILOT GENERATED"],
+["- COPILOT GENERATED:"],
 ["GHCopilot Starship Enc.","Abnormal","Activity","Adversity","Aggressive","Ambush","Ancient","Animals","Aromatic","Art","Assist","Average","Beautiful","Bizarre","Bleak","Block","Boulder","Cave","Cliff","Cold","Colorful","Combative","Communicate","Computer","Contain","Controls","Creepy","Crew","Damaged","Danger","Dark","Death","Delicate","Dry","Elements","Enormous","Environment","Exotic","Fearful","Feeble","Fierce","Food","Fortunate","Fresh","Harsh","Health","Helpful","Important","Information","Intense","Intriguing","Lacking","Lake","Large","Lean","Ledge","Lethal","Loud","Macabre","Magnificent","Majestic","Masses","Mature","Messages","Mighty","Mundane","Mysterious","Natural","Nature","Nondescript","Normal","Odd","Old","Path","Peaceful","Plants","Pond","Possessions","Powerful","Pursue","Quiet","Rare","Reassuring","Remarkable","River","Rocks","Rough","Ruined","Scary","Simple","Slope","Small","Sounds","Strong","Threatening","Tranquil","Tree","Valuable","Violent","Warm","Watery","Weak","Weather","Wild","Young"],  
 ];
 
