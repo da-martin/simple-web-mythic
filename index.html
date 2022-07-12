@@ -155,7 +155,7 @@
           <option value="3">3</option>
         </select>
         <button type="button" class="gme-button" id="scene-button">Scene Setup</button>
-        <button type="button" class="gme-button" id="random-button">Rnd Event</button>
+        <button type="button" class="gme-button" id="randomevent-button">Rnd Event</button>
       </div>
       <div class="oracle-rows">
         <button type="button" class="gme-button" id="fate-button">Fate Check</button>
@@ -316,6 +316,11 @@
   const btnScene = document.querySelector('#scene-button');
   btnScene.addEventListener('click', () => {
       txtaResults.value = txtaResults.value + "SCENE SETUP: " + sceneSetup(gChaosFactor,Number(selTheme.value)) + "\n";
+  })
+
+  const btnRandomEvent = document.querySelector('#randomevent-button');
+  btnRandomEvent.addEventListener('click', () => {
+      txtaResults.value = txtaResults.value + "RANDOM EVENT: \n" + randomEvent(Number(selTheme.value)) + "\n";
   })
   
   const btnFate = document.querySelector('#fate-button');
