@@ -143,7 +143,7 @@
 
 <!-- HTML HERE ---------------------------------------------------->
 <body>
-  <h1>Mythic Simple Web v0.3.1</h1>
+  <h1>Mythic Simple Web v0.3.2</h1>
   <div id="container">
     <div id="main" class="frames">
       <div class="oracle-rows">
@@ -154,12 +154,12 @@
           <option value="4" selected>4</option>
           <option value="3">3</option>
         </select>
-        <button type="button" class="gme-button" id="scene-button">Scene Setup</button>
+        <button type="button" class="gme-button" id="scenesetup-button">Scene Setup</button>
         <button type="button" class="gme-button" id="randomevent-button">Rnd Event</button>
       </div>
       <div class="oracle-rows">
-        <button type="button" class="gme-button" id="fate-button">Fate Check</button>
-        <select id="fate-likelyhood">
+        <button type="button" class="gme-button" id="fatecheck-button">Fate Check</button>
+        <select id="fatecheck-likelyhood">
           <option value="8">Has To Be</option>
           <option value="6">Sure Thing</option>
           <option value="4">V. Likely</option>
@@ -170,7 +170,7 @@
           <option value="-6">No Way</option>
           <option value="-8">Impossible</option>
         </select>
-        <select id="fate-favorable">
+        <select id="fatecheck-favorable">
           <option value="Favorable">Favorable</option>
           <option value="Neutral" selected>Neutral</option>
           <option value="Unfavorable">Unfavorable</option>
@@ -178,12 +178,12 @@
       </div>
       <div class="oracle-rows">
         <select id="focus-event"></select>
-        <button type="button" class="gme-button" id="focus-button">Event Focus</button>
+        <button type="button" class="gme-button" id="eventfocus-button">Event Focus</button>
       </div>
       <div class="oracle-rows">
         <button type="button" class="gme-button" id="action-button">Action</button>
         <button type="button" class="gme-button" id="description-button">Description</button>
-        <button type="button" class="gme-button" id="detail-button">Detail Check</button>
+        <button type="button" class="gme-button" id="detailcheck-button">Detail Check</button>
       </div>
       <hr>
       <div class="oracle-rows">
@@ -264,7 +264,6 @@
  
     <div id="credits" class="frames">
       <p>
-        <!-- In order to use this tool you need some knowledge of the <em>Mythic Game Master Emulator</em> (see below).<br> -->
         This tool is based on Mythic Game Master Emulator, Mythic Variations, Mythic Variations 2, and the Mythic Magazines by Tana Pigeon. Visit <a href="http://www.wordmillgames.com">www.wordmillgames.com</a> for more information and lots of awesomeness.
       </p>
       <hr>
@@ -287,25 +286,25 @@
   window.addEventListener('load', () => {
   
     const selectEventFocus = document.querySelector('#focus-event');
-    loadSelectWithCategoryTables(selectEventFocus,tablesThemes);
+    loadSelectWithCategoryTable(selectEventFocus,tablesThemes);
   
     const selectCharacterTables = document.querySelector('#character-tables');
-    loadSelectWithCategoryTables(selectCharacterTables,tablesCharacters);
+    loadSelectWithCategoryTable(selectCharacterTables,tablesCharacters);
   
     const selectLocationTables = document.querySelector('#location-tables');
-    loadSelectWithCategoryTables(selectLocationTables,tablesLocations);
+    loadSelectWithCategoryTable(selectLocationTables,tablesLocations);
   
     const selectObjectTables = document.querySelector('#object-tables');
-    loadSelectWithCategoryTables(selectObjectTables,tablesObjects);
+    loadSelectWithCategoryTable(selectObjectTables,tablesObjects);
   
     const selectAdventureTables = document.querySelector('#adventure-tables');
-    loadSelectWithCategoryTables(selectAdventureTables,tablesAdventure);
+    loadSelectWithCategoryTable(selectAdventureTables,tablesAdventure);
 
     const selectEncountersTables = document.querySelector('#encounters-tables');
-    loadSelectWithCategoryTables(selectEncountersTables,tablesEncounters);
+    loadSelectWithCategoryTable(selectEncountersTables,tablesEncounters);
  
     const selectOtherTables = document.querySelector('#other-tables');
-    loadSelectWithCategoryTables(selectOtherTables,tablesOther);
+    loadSelectWithCategoryTable(selectOtherTables,tablesOther);
   });
   
    
@@ -313,8 +312,8 @@
   selChaosFactor.addEventListener('change', () => {
     gChaosFactor = Number(selChaosFactor.value)});
   
-  const btnScene = document.querySelector('#scene-button');
-  btnScene.addEventListener('click', () => {
+  const btnSceneSetup = document.querySelector('#scenesetup-button');
+  btnSceneSetup.addEventListener('click', () => {
       txtaResults.value = txtaResults.value + "SCENE SETUP: " + sceneSetup(gChaosFactor,Number(selTheme.value)) + "\n";
   })
 
@@ -323,15 +322,15 @@
       txtaResults.value = txtaResults.value + "RANDOM EVENT: \n" + randomEvent(Number(selTheme.value)) + "\n";
   })
   
-  const btnFate = document.querySelector('#fate-button');
-  btnFate.addEventListener('click', () => {
-    const likelyhood = document.querySelector('#fate-likelyhood');
-    const favorable = document.querySelector('#fate-favorable');
+  const btnFateCheck = document.querySelector('#fatecheck-button');
+  btnFateCheck.addEventListener('click', () => {
+    const likelyhood = document.querySelector('#fatecheck-likelyhood');
+    const favorable = document.querySelector('#fatecheck-favorable');
     txtaResults.value = txtaResults.value + "FATE CHECK: " + fateCheck(gChaosFactor,likelyhood.value,favorable.value,selTheme.value) + "\n";
   })
   
-  const btnFocus = document.querySelector('#focus-button');
-  btnFocus.addEventListener('click', () => {
+  const btnEventFocus = document.querySelector('#eventfocus-button');
+  btnEventFocus.addEventListener('click', () => {
       txtaResults.value = txtaResults.value + "EVENT FOCUS: " + rollOnTable(tablesThemes,selTheme.value) + "\n";
   })
   
@@ -345,8 +344,8 @@
       txtaResults.value = txtaResults.value + "DESCRIPTION, MEANING: " + meaningDescription() + "\n";;
   })
   
-  const btnDetail = document.querySelector('#detail-button');
-  btnDetail.addEventListener('click', () => {
+  const btnDetailCheck = document.querySelector('#detailcheck-button');
+  btnDetailCheck.addEventListener('click', () => {
       txtaResults.value = txtaResults.value + "DETAIL CHECK: " + detailCheck(gChaosFactor) + "\n";
   })
   
@@ -450,28 +449,25 @@
   })
   
 
-  function loadSelect(element,tableCategory,arrayTablesIDs) {
-    console.log(element);
-    console.log(arrayTablesIDs);
+  function loadSelect(select,tableCategory,arrayTablesIDs) {
     arrayTablesIDs.forEach(index => {
       const optionItem = document.createElement("option");
       optionItem.value = index;
       optionItem.text = tableCategory[index][0];
-      element.appendChild(optionItem);
+      select.appendChild(optionItem);
     });
   }
   
-  function loadSelectWithCategoryTables(element,tableCategory) {
+  function loadSelectWithCategoryTable(select,tableCategory) {
     tableCategory.forEach((item, index) => {
       const optionItem = document.createElement("option");
       optionItem.value = index;
       optionItem.text = item[0];
-      element.appendChild(optionItem);
+      select.appendChild(optionItem);
     });
   }
     
   function rollOnTable(tableCategoryArray, tableNumber){
-    console.log(`tableNumber: ${tableNumber}`);
     if (isNaN(tableNumber)) return "";
     let randomIndex = Math.floor(Math.random() * (tableCategoryArray[tableNumber].length - 1)) + 1;
     let randomResult = tableCategoryArray[tableNumber][randomIndex];
@@ -480,7 +476,6 @@
   
   function sceneSetup(chaosFactor,theme) {
     let d1 = Math.floor(Math.random() * 10) + 1;
-    console.log(`Dado Scene Setup: ${d1}`)
     if (d1 > chaosFactor) return "Scene as expected";
     else if (d1 % 2 != 0) return "Scene is altered";
     else return "Scene is interrupted\n" + randomEvent(theme);
@@ -490,15 +485,13 @@
     let d1 = Math.floor(Math.random() * 10) + 1;
     let d2 = Math.floor(Math.random() * 10) + 1;
     let d3 = Math.floor(Math.random() * 10) + 1;
-    console.log(`Dados Fate Check: ${d1} ${d2}, ${d3}`);
     let result = "";
     let modifier = 0;
     if ((likelyhood == "Favorable" && gChaosFactor < 4) || (likelyhood == "Unfavorable" && gChaosFactor > 6)) modifier = 2;
       else if ((likelyhood == "Unfavorable" && chaosFactor < 4) || (likelyhood == "Favorable" && chaosFactor > 6)) modifier = -2;
-    console.log(`D1:${d1} D2:${d2} D3:${d3} Mod:${modifier} Likely:${likelyhood}`);
     const rollResult = (d1 + d2 + modifier + Number(likelyhood));
     (rollResult > 10) ? result = `Yes (${rollResult})` : result = `No (${rollResult})`;
-    if (d3<=chaosFactor) {
+    if (d3 <= chaosFactor) {
       if (d1 == d2) {
         result = "Exceptional " + result + " and random event\n";
       }
@@ -547,26 +540,11 @@
 function skillCheck(activeRank,opposingRank,chaosFactor,theme) {
     let d1 = Math.floor(Math.random() * 10) + 1;
     let d2 = Math.floor(Math.random() * 10) + 1;
-    // let d3 = Math.floor(Math.random() * 10) + 1;
     const roll = d1 + d2;
     const modifier = activeRank - opposingRank;
     const rollResult = (roll + modifier);
     let result = `[${roll}] + ${modifier} = `;
     ( rollResult > 10) ? result = result + `Success (${rollResult})` : result = result + `Failure (${rollResult})`;
-    // if (d3<=chaosFactor) {
-    //   if (d1 == d2) {
-    //     result = "Exceptional " + result + " and random event\n";
-    //   }
-    //   else if (d1 % 2 == 0 && d2 % 2 == 0) {
-    //     result = result + " and random event\n";
-    //   }
-    //   else if (d1 % 2 !== 0 && d2 % 2 !== 0) {
-    //     result = "Exceptional " + result;
-    //     return result;
-    //   }
-    //   else return result;
-    //   result = result + randomEvent(theme);
-    // }
     return result;
   }
     
