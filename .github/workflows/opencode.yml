@@ -26,3 +26,4 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           model: openrouter/openrouter/free
+          use_github_token: true
