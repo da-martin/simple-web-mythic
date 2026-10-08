@@ -14,6 +14,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Ejecutar OpenCode Action
-        uses: opencode-ai/opencode-action@v1
+        uses: anomalyco/opencode/github@latest
         with:
           api-key: ${{ secrets.OPENROUTER_API_KEY }}
