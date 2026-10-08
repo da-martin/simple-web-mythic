@@ -1,0 +1,19 @@
+name: OpenCode GitHub Action
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  opencode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Ejecutar OpenCode Action
+        uses: anomalyco/opencode-action@v2
+        with:
+          api-key: ${{ secrets.OPENROUTER_API_KEY }}
