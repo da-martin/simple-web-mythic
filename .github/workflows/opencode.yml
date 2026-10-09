@@ -29,5 +29,5 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          model: openrouter/openrouter/free
+          model: openrouter/nvidia/nemotron-3-ultra-550b-a55b:free
           use-github-token: true
