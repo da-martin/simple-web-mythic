@@ -430,8 +430,10 @@
   const btnAdventure = document.querySelector('#adventure-button');
   btnAdventure.addEventListener('click', () => {
     const selAdventure = document.querySelector('#adventure-tables');
-    if (tablesAdventure[selAdventure.value].length > 1)
-      txtaResults.value = txtaResults.value + tablesAdventure[selAdventure.value][0].toUpperCase() + ": " + rollOnTable(tablesAdventure,Number(selAdventure.value)) + ", " + rollOnTable(tablesAdventure,Number(selAdventure.value)) + "\n";
+    const tableIndex = Number(selAdventure.value);
+    if (!isNaN(tableIndex) && tablesAdventure[tableIndex] && tablesAdventure[tableIndex].length > 1) {
+      txtaResults.value = txtaResults.value + tablesAdventure[tableIndex][0].toUpperCase() + ": " + rollOnTable(tablesAdventure, tableIndex) + ", " + rollOnTable(tablesAdventure, tableIndex) + "\n";
+    }
   })
   
   const btnEncounters = document.querySelector('#encounters-button');
